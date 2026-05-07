@@ -26,23 +26,36 @@ interface Place {
 interface AddPlaceForm {
   lat: number
   lng: number
-  name: string
-  category: string
-  city: string
-  description: string
 }
 
 const CATEGORIES = ['FOOD', 'ADMIN', 'HEALTH', 'CULTURE', 'COMMUNITY']
 
-export function MapPageClient({ places: initialPlaces, isAuthenticated }: { places: Place[], isAuthenticated: boolean }) {
+interface MapPageClientProps {
+  places: Place[]
+  isAuthenticated: boolean
+  defaultCity: string
+  defaultCenter: [number, number]
+}
+
+export function MapPageClient({
+  places: initialPlaces,
+  isAuthenticated,
+  defaultCity,
+  defaultCenter,
+}: MapPageClientProps) {
   const [places, setPlaces] = useState(initialPlaces)
   const [showAddForm, setShowAddForm] = useState(false)
   const [addForm, setAddForm] = useState<AddPlaceForm | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  const [formData, setFormData] = useState({ name: '', category: 'FOOD', city: 'Paris', description: '' })
+  const [formData, setFormData] = useState({
+    name: '',
+    category: 'FOOD',
+    city: defaultCity,
+    description: '',
+  })
 
   const handleMapClick = (lat: number, lng: number) => {
-    setAddForm({ lat, lng, name: '', category: 'FOOD', city: 'Paris', description: '' })
+    setAddForm({ lat, lng })
     setShowAddForm(true)
   }
 
@@ -62,7 +75,7 @@ export function MapPageClient({ places: initialPlaces, isAuthenticated }: { plac
       setPlaces((prev) => [...prev, place])
       setShowAddForm(false)
       setAddForm(null)
-      setFormData({ name: '', category: 'FOOD', city: 'Paris', description: '' })
+      setFormData({ name: '', category: 'FOOD', city: defaultCity, description: '' })
     }
     setSubmitting(false)
   }
@@ -73,6 +86,8 @@ export function MapPageClient({ places: initialPlaces, isAuthenticated }: { plac
         places={places}
         canAdd={isAuthenticated}
         onAddPlace={handleMapClick}
+        defaultCity={defaultCity}
+        defaultCenter={defaultCenter}
       />
 
       {/* Add place modal */}
@@ -101,20 +116,22 @@ export function MapPageClient({ places: initialPlaces, isAuthenticated }: { plac
                     className="input-field"
                   >
                     {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c.charAt(0) + c.slice(1).toLowerCase()}</option>
+                      <option key={c} value={c}>
+                        {c.charAt(0) + c.slice(1).toLowerCase()}
+                      </option>
                     ))}
                   </select>
                 </div>
                 <div>
                   <label className="section-label block mb-1.5 text-[10px]">City *</label>
-                  <select
+                  <input
+                    type="text"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     className="input-field"
-                  >
-                    <option>Paris</option>
-                    <option>Lyon</option>
-                  </select>
+                    placeholder="City name"
+                    required
+                  />
                 </div>
               </div>
               <div>
@@ -130,10 +147,18 @@ export function MapPageClient({ places: initialPlaces, isAuthenticated }: { plac
                 Coordinates: {addForm.lat.toFixed(4)}, {addForm.lng.toFixed(4)}
               </div>
               <div className="flex gap-2 pt-1">
-                <button type="submit" disabled={submitting} className="btn-primary flex-1 justify-center text-xs">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="btn-primary flex-1 justify-center text-xs"
+                >
                   {submitting ? 'Adding...' : 'Add place'}
                 </button>
-                <button type="button" onClick={() => setShowAddForm(false)} className="btn-ghost text-xs">
+                <button
+                  type="button"
+                  onClick={() => setShowAddForm(false)}
+                  className="btn-ghost text-xs"
+                >
                   Cancel
                 </button>
               </div>

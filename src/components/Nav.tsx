@@ -24,7 +24,7 @@ export function Nav() {
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-6">
         <Link href="/" className="flex items-center gap-3 shrink-0">
           <span className="text-accent text-lg leading-none select-none" aria-hidden>繋</span>
-          <span className="font-bold text-sm tracking-widest uppercase text-foreground">Tsunagari</span>
+          <span className="font-mono font-bold text-sm tracking-widest uppercase text-foreground">Tsunagari</span>
         </Link>
 
         {/* Desktop nav */}
@@ -34,7 +34,7 @@ export function Nav() {
               key={link.href}
               href={link.href}
               className={cn(
-                'text-xs uppercase tracking-widest transition-colors duration-150',
+                'text-xs uppercase tracking-widest font-mono transition-colors duration-150',
                 pathname === link.href
                   ? 'text-foreground font-bold'
                   : 'text-muted hover:text-foreground'
@@ -87,7 +87,7 @@ export function Nav() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-xs uppercase tracking-widest text-muted hover:text-foreground transition-colors py-1"
+                className="text-xs uppercase tracking-widest font-mono text-muted hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}

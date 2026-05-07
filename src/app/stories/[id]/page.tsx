@@ -66,7 +66,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
         <Divider className="mb-8" />
 
         {/* Author */}
-        <div className="flex items-start gap-5">
+        <div className="flex items-start gap-5 bg-surface border border-border p-5">
           <div className="w-10 h-10 border border-border flex items-center justify-center shrink-0">
             <span className="text-accent text-sm" aria-hidden>繋</span>
           </div>

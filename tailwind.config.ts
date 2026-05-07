@@ -9,14 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: '#FAFAF7',
-        foreground: '#1A1A1A',
-        accent: '#2E3A8C',
-        border: '#E0E0DA',
-        muted: '#767672',
-        'muted-bg': '#F0F0EC',
+        background: '#F4EFE6',
+        surface: '#FBF8F3',
+        foreground: '#111111',
+        accent: '#6E2132',
+        'accent-hover': '#8B2A3E',
+        border: '#D7CCBF',
+        muted: '#625A52',
+        'muted-bg': '#EDE8DF',
       },
       fontFamily: {
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['var(--font-space-mono)', 'Space Mono', 'JetBrains Mono', 'Courier New', 'monospace'],
       },
       borderRadius: {

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Space_Mono } from 'next/font/google'
+import { Space_Mono, Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { Nav } from '@/components/Nav'
@@ -8,6 +8,12 @@ const spaceMono = Space_Mono({
   weight: ['400', '700'],
   subsets: ['latin'],
   variable: '--font-space-mono',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 })
 
@@ -23,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={spaceMono.variable}>
-      <body className="font-mono bg-background text-foreground min-h-screen">
+    <html lang="en" className={`${spaceMono.variable} ${inter.variable}`}>
+      <body className="font-sans bg-background text-foreground min-h-screen">
         <Providers>
           <Nav />
           <main className="min-h-[calc(100vh-4rem)]">

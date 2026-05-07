@@ -73,7 +73,7 @@ export default async function BuddyPage() {
           {activeRequest ? (
             <div className="border border-border p-5 space-y-3">
               <div className={`text-xs font-bold uppercase tracking-widest ${
-                activeRequest.status === 'ACTIVE' ? 'text-accent' : 'text-amber-600'
+                activeRequest.status === 'ACTIVE' ? 'text-accent' : 'text-muted'
               }`}>
                 {activeRequest.status === 'ACTIVE' ? 'Active match' : 'Request pending'}
               </div>
@@ -161,7 +161,7 @@ export default async function BuddyPage() {
                       </div>
                       <span className={`text-[10px] uppercase tracking-widest font-bold ${
                         match.status === 'ACTIVE' ? 'text-accent' :
-                        match.status === 'PENDING' ? 'text-amber-600' : 'text-muted'
+                        match.status === 'PENDING' ? 'text-muted' : 'text-muted'
                       }`}>
                         {match.status}
                       </span>

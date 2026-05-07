@@ -7,8 +7,8 @@ interface StatusBadgeProps {
 }
 
 const STATUS_CONFIG = {
-  NEWCOMER: { dot: 'bg-amber-500', text: 'text-amber-700', label: 'NEWCOMER' },
-  SETTLED: { dot: 'bg-emerald-500', text: 'text-emerald-700', label: 'SETTLED' },
+  NEWCOMER: { dot: 'bg-muted', text: 'text-muted', label: 'NEWCOMER' },
+  SETTLED: { dot: 'bg-accent', text: 'text-foreground', label: 'SETTLED' },
   AMBASSADOR: { dot: 'bg-accent', text: 'text-accent', label: 'AMBASSADOR' },
 }
 

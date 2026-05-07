@@ -101,7 +101,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Progress bar */}
-          <div className="h-1 bg-muted-bg border border-border overflow-hidden">
+          <div className="h-1 bg-muted-bg border border-border overflow-hidden" role="progressbar">
             <div
               className="h-full bg-accent transition-all duration-500"
               style={{ width: `${progress}%` }}
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
         {/* Sidebar — 1/3 width */}
         <div className="space-y-5">
           {/* Buddy status */}
-          <div className="border border-border p-5">
+          <div className="border border-border bg-surface p-5">
             <div className="section-label mb-3">Buddy</div>
             {buddyAsNewcomer ? (
               <div>
@@ -140,7 +140,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Upcoming experiences */}
-          <div className="border border-border p-5">
+          <div className="border border-border bg-surface p-5">
             <div className="section-label mb-3">Upcoming</div>
             {experiences.length > 0 ? (
               <div className="space-y-3">
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Profile summary */}
-          <div className="border border-border p-5">
+          <div className="border border-border bg-surface p-5">
             <div className="section-label mb-3">Profile</div>
             <div className="space-y-1.5 text-xs text-muted">
               <div>Nationality: <span className="text-foreground">{user.nationality ?? '—'}</span></div>

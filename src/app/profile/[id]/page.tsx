@@ -89,7 +89,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         </div>
 
         {/* Stats */}
-        <div className="border border-border p-5">
+        <div className="border border-border bg-surface p-5">
           <div className="section-label mb-4">Contributions</div>
           <div className="grid grid-cols-2 gap-4">
             <div>

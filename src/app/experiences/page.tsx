@@ -85,7 +85,7 @@ function ExperienceCard({
 
   return (
     <Link href={`/experiences/${experience.id}`} className="block group">
-      <div className="border border-border p-5 h-full flex flex-col hover:border-foreground transition-colors duration-150">
+      <div className="border border-border bg-surface p-5 h-full flex flex-col hover:border-accent transition-colors duration-150">
         <div className="flex items-start justify-between gap-2 mb-3">
           <span className="text-[10px] text-muted uppercase tracking-widest">{experience.city}</span>
           {!past && (

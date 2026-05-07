@@ -37,7 +37,7 @@ export default function SignInPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full">
-          <div className="border border-border p-8 md:p-10">
+          <div className="border border-border bg-surface p-8 md:p-10">
             <div className="text-accent text-2xl mb-6 select-none" aria-hidden>繋</div>
             <div className="section-label mb-4">Magic link sent</div>
             <h1 className="text-xl font-bold mb-4">Check your inbox</h1>
@@ -59,7 +59,7 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="border border-border p-8 md:p-10">
+        <div className="border border-border bg-surface p-8 md:p-10">
           <div className="text-accent text-2xl mb-6 select-none" aria-hidden>繋</div>
 
           <div className="section-label mb-2">Welcome</div>

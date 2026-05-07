@@ -3,12 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #FAFAF7;
-  --foreground: #1A1A1A;
-  --accent: #2E3A8C;
-  --border: #E0E0DA;
-  --muted: #767672;
-  --muted-bg: #F0F0EC;
+  --background: #F4EFE6;
+  --surface: #FBF8F3;
+  --foreground: #111111;
+  --accent: #6E2132;
+  --accent-hover: #8B2A3E;
+  --border: #D7CCBF;
+  --muted: #625A52;
+  --muted-bg: #EDE8DF;
 }
 
 * {
@@ -23,14 +25,18 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-space-mono), 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-space-mono), 'Space Mono', monospace;
+}
+
 ::selection {
-  background-color: #2E3A8C;
-  color: #FAFAF7;
+  background-color: #6E2132;
+  color: #FBF8F3;
 }
 
 /* Scrollbar */
@@ -50,7 +56,7 @@ body {
 
 /* Leaflet overrides */
 .leaflet-container {
-  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   background: var(--muted-bg);
 }
 
@@ -58,12 +64,12 @@ body {
   border-radius: 2px;
   border: 1px solid var(--border);
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  font-family: var(--font-inter), 'Inter', sans-serif;
   font-size: 12px;
 }
 
 .leaflet-popup-tip {
-  background: white;
+  background: var(--surface);
 }
 
 @layer base {
@@ -80,15 +86,15 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent text-background text-xs font-bold uppercase tracking-widest border border-accent;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent text-surface text-xs font-bold uppercase tracking-widest font-mono;
     transition: all 150ms;
   }
   .btn-primary:hover {
-    @apply bg-foreground border-foreground;
+    background-color: var(--accent-hover);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-foreground text-xs font-bold uppercase tracking-widest border border-foreground;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-foreground text-xs font-bold uppercase tracking-widest border border-foreground font-mono;
     transition: all 150ms;
   }
   .btn-secondary:hover {
@@ -96,7 +102,7 @@ body {
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-muted text-xs uppercase tracking-widest border border-border;
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-muted text-xs uppercase tracking-widest border border-border font-mono;
     transition: all 150ms;
   }
   .btn-ghost:hover {
@@ -104,17 +110,17 @@ body {
   }
 
   .input-field {
-    @apply w-full px-3 py-2 bg-background border border-border text-foreground text-sm placeholder-muted;
+    @apply w-full px-3 py-2 bg-surface border border-border text-foreground text-sm placeholder-muted;
     @apply focus:outline-none focus:border-foreground;
     transition: border-color 150ms;
   }
 
   .section-label {
-    @apply text-xs uppercase tracking-widest text-muted font-bold;
+    @apply text-xs uppercase tracking-widest text-muted font-bold font-mono;
   }
 
   .card {
-    @apply border border-border bg-background p-5;
+    @apply border border-border bg-surface p-5;
   }
 
   .divider {

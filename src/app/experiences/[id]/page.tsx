@@ -71,7 +71,7 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
 
         {/* Sidebar */}
         <div className="space-y-4">
-          <div className="border border-border p-5 space-y-3">
+          <div className="border border-border bg-surface p-5 space-y-3">
             <div className="section-label">When</div>
             <div className="text-sm font-bold">{formatDate(experience.date)}</div>
             <div className="text-xs text-muted">
@@ -110,7 +110,7 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
           </div>
 
           {/* Host */}
-          <div className="border border-border p-5">
+          <div className="border border-border bg-surface p-5">
             <div className="section-label mb-3">Host</div>
             <Link href={`/profile/${experience.host.id}`} className="block group">
               <div className="font-bold text-sm group-hover:text-accent transition-colors">

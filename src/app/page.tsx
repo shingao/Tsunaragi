@@ -65,13 +65,13 @@ export default function HomePage() {
           </div>
 
           <div className="hidden lg:block">
-            <div className="border border-border p-8 space-y-4">
+            <div className="border border-border bg-surface p-8 space-y-4">
               <div className="section-label">Status progression</div>
               <Divider />
               <div className="space-y-4 mt-4">
                 {[
-                  { dot: 'bg-amber-500', label: 'NEWCOMER', desc: '< 3 months in France', active: true },
-                  { dot: 'bg-emerald-500', label: 'SETTLED', desc: '3+ months, finding rhythm' },
+                  { dot: 'bg-muted', label: 'NEWCOMER', desc: '< 3 months in France', active: true },
+                  { dot: 'bg-accent', label: 'SETTLED', desc: '3+ months, finding rhythm' },
                   { dot: 'bg-accent', label: 'AMBASSADOR', desc: '3 contributions + settled' },
                 ].map((s, i) => (
                   <div key={i} className={`flex items-start gap-4 ${!s.active ? 'opacity-50' : ''}`}>
@@ -102,7 +102,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
           {VALUE_PROPS.map((prop) => (
-            <div key={prop.symbol} className="bg-background p-8 md:p-10">
+            <div key={prop.symbol} className="bg-surface p-8 md:p-10">
               <div className="text-accent text-xs font-bold tracking-widest mb-6">{prop.symbol}</div>
               <h3 className="text-lg font-bold text-foreground mb-3 tracking-tight">{prop.title}</h3>
               <p className="text-sm text-muted leading-relaxed">{prop.description}</p>

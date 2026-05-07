@@ -50,13 +50,13 @@ export const STATUS_LABELS: Record<UserStatus, string> = {
 }
 
 export const STATUS_COLORS: Record<UserStatus, string> = {
-  NEWCOMER: 'text-amber-700',
-  SETTLED: 'text-emerald-700',
+  NEWCOMER: 'text-muted',
+  SETTLED: 'text-foreground',
   AMBASSADOR: 'text-accent',
 }
 
 export const STATUS_DOT: Record<UserStatus, string> = {
-  NEWCOMER: 'bg-amber-500',
-  SETTLED: 'bg-emerald-500',
+  NEWCOMER: 'bg-muted',
+  SETTLED: 'bg-accent',
   AMBASSADOR: 'bg-accent',
 }

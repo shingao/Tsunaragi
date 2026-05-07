@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #FAFAF7;
+  --foreground: #1A1A1A;
+  --accent: #2E3A8C;
+  --border: #E0E0DA;
+  --muted: #767672;
+  --muted-bg: #F0F0EC;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-space-mono), 'Space Mono', 'JetBrains Mono', 'Courier New', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #2E3A8C;
+  color: #FAFAF7;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  background: var(--muted-bg);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  font-size: 12px;
+}
+
+.leaflet-popup-tip {
+  background: white;
+}
+
+@layer base {
+  a {
+    transition: color 150ms;
+  }
+  button {
+    transition: all 150ms;
+  }
+  input, textarea, select {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent text-background text-xs font-bold uppercase tracking-widest border border-accent;
+    transition: all 150ms;
+  }
+  .btn-primary:hover {
+    @apply bg-foreground border-foreground;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-foreground text-xs font-bold uppercase tracking-widest border border-foreground;
+    transition: all 150ms;
+  }
+  .btn-secondary:hover {
+    @apply bg-foreground text-background;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-muted text-xs uppercase tracking-widest border border-border;
+    transition: all 150ms;
+  }
+  .btn-ghost:hover {
+    @apply text-foreground border-foreground;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 bg-background border border-border text-foreground text-sm placeholder-muted;
+    @apply focus:outline-none focus:border-foreground;
+    transition: border-color 150ms;
+  }
+
+  .section-label {
+    @apply text-xs uppercase tracking-widest text-muted font-bold;
+  }
+
+  .card {
+    @apply border border-border bg-background p-5;
+  }
+
+  .divider {
+    @apply border-t border-border;
+  }
+}

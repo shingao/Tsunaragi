@@ -36,6 +36,10 @@ export default async function DashboardPage() {
     prisma.checklistItem.findMany({
       where: { userId },
       orderBy: { order: 'asc' },
+      select: {
+        id: true, category: true, title: true, description: true,
+        completed: true, order: true, guideSlug: true,
+      },
     }),
     prisma.buddyMatch.findFirst({
       where: { newcomerId: userId, status: { in: ['PENDING', 'ACTIVE'] } },

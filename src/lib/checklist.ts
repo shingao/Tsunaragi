@@ -5,18 +5,19 @@ interface ChecklistTemplate {
   title: string
   description: string
   order: number
+  guideSlug?: string
 }
 
 const GENERIC_ITEMS: ChecklistTemplate[] = [
   { category: 'admin', title: 'Register at your local Mairie', description: 'Register your address at the town hall (declaration de domicile)', order: 1 },
-  { category: 'admin', title: 'Open a French bank account', description: 'Required for most services. Try La Banque Postale or a neobank like Wise.', order: 2 },
+  { category: 'admin', title: 'Open a French bank account', description: 'Required for most services. Try La Banque Postale or a neobank like Wise.', order: 2, guideSlug: 'open-bank-account' },
   { category: 'health', title: 'Register with CPAM (Assurance Maladie)', description: 'Apply for French health insurance at ameli.fr', order: 3 },
-  { category: 'admin', title: 'Apply for CAF housing aid', description: 'Housing assistance (APL) from the French state at caf.fr', order: 4 },
-  { category: 'admin', title: 'Get a French SIM card', description: 'A local number is needed for most registrations and verifications', order: 5 },
+  { category: 'admin', title: 'Apply for CAF housing aid', description: 'Housing assistance (APL) from the French state at caf.fr', order: 4, guideSlug: 'caf-housing-aid' },
+  { category: 'admin', title: 'Get a French SIM card', description: 'A local number is needed for most registrations and verifications', order: 5, guideSlug: 'french-sim-card' },
   { category: 'health', title: 'Obtain your Carte Vitale', description: 'Your health insurance card — apply once CPAM registration is confirmed', order: 6 },
   { category: 'health', title: 'Register with a médecin traitant', description: 'Choose a primary care physician (required for full reimbursement)', order: 7 },
-  { category: 'admin', title: 'Set up a Navigo transport card', description: 'Monthly metro/bus pass for Île-de-France. Available at any station.', order: 8 },
-  { category: 'admin', title: 'Apply for titre de séjour (non-EU)', description: 'Submit residence permit application online at administration-etrangers-en-france.interieur.gouv.fr', order: 9 },
+  { category: 'admin', title: 'Set up a Navigo transport card', description: 'Monthly metro/bus pass for Île-de-France. Available at any station.', order: 8, guideSlug: 'navigo-card' },
+  { category: 'admin', title: 'Apply for titre de séjour (non-EU)', description: 'Submit residence permit application online at administration-etrangers-en-france.interieur.gouv.fr', order: 9, guideSlug: 'titre-de-sejour-student' },
   { category: 'admin', title: 'Set up EDF or Engie (utilities)', description: 'Register electricity and gas in your name if renting', order: 10 },
   { category: 'community', title: 'Explore your neighborhood', description: 'Find the nearest bakery, pharmacy, and supermarket', order: 11 },
   { category: 'food', title: 'Visit a local market', description: 'Fresh produce, local culture, and affordable groceries', order: 12 },
@@ -77,6 +78,7 @@ export async function generateChecklist(
       title: item.title,
       description: item.description,
       order: item.order,
+      guideSlug: item.guideSlug ?? null,
       completed: false,
     })),
   })

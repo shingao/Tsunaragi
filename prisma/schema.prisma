@@ -31,6 +31,7 @@ model User {
   buddyAsNewcomer   BuddyMatch[]         @relation("Newcomer")
   buddyAsAmbassador BuddyMatch[]         @relation("Ambassador")
   rsvps             ExperienceAttendee[]
+  guideComments     GuideComment[]
 }
 
 model Account {
@@ -77,6 +78,7 @@ model ChecklistItem {
   description String?
   completed   Boolean  @default(false)
   order       Int
+  guideSlug   String?
   createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -144,4 +146,31 @@ model Story {
   updatedAt DateTime @updatedAt
 
   author User @relation(fields: [authorId], references: [id])
+}
+
+model Guide {
+  id                String         @id @default(cuid())
+  slug              String         @unique
+  checklistCategory String
+  title             String
+  summary           String
+  officialLinks     String         @default("[]")
+  steps             String         @default("[]")
+  tips              String?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  comments GuideComment[]
+}
+
+model GuideComment {
+  id        String   @id @default(cuid())
+  guideId   String
+  authorId  String
+  content   String
+  helpful   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  guide  Guide @relation(fields: [guideId], references: [id], onDelete: Cascade)
+  author User  @relation(fields: [authorId], references: [id])
 }

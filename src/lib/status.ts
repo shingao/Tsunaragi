@@ -11,14 +11,13 @@ export function computeStatusFromArrival(arrivalDate: Date | null): UserStatus {
 }
 
 export async function countContributions(userId: string): Promise<number> {
-  const [places, stories, hostedBuddies] = await Promise.all([
+  const [places, stories, hostedBuddies, guideComments] = await Promise.all([
     prisma.place.count({ where: { addedById: userId } }),
     prisma.story.count({ where: { authorId: userId } }),
-    prisma.buddyMatch.count({
-      where: { ambassadorId: userId, status: 'ACTIVE' },
-    }),
+    prisma.buddyMatch.count({ where: { ambassadorId: userId, status: 'ACTIVE' } }),
+    prisma.guideComment.count({ where: { authorId: userId } }),
   ])
-  return places + stories + hostedBuddies
+  return places + stories + hostedBuddies + guideComments
 }
 
 export async function refreshUserStatus(userId: string): Promise<UserStatus> {

@@ -6,6 +6,8 @@ async function main() {
   console.log('🌱 Seeding database...')
 
   // Clear existing data
+  await prisma.guideComment.deleteMany()
+  await prisma.guide.deleteMany()
   await prisma.buddyMatch.deleteMany()
   await prisma.experienceAttendee.deleteMany()
   await prisma.story.deleteMany()
@@ -45,53 +47,351 @@ async function main() {
       arrivalDate: new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()),
       languages: JSON.stringify(['Japanese', 'English']),
       status: 'NEWCOMER',
-      bio: 'Recently arrived in Paris for a Master\'s in AI. Still figuring out the CAF paperwork but loving the bakeries.',
+      bio: "Recently arrived in Paris for a Master's in AI. Still figuring out the CAF paperwork but loving the bakeries.",
       emailVerified: new Date(),
     },
   })
 
   console.log('✓ Created 2 demo users')
 
+  // ── Guides ───────────────────────────────────────────────
+  const guideSimCard = await prisma.guide.create({
+    data: {
+      slug: 'french-sim-card',
+      checklistCategory: 'admin',
+      title: 'Get a French SIM Card',
+      summary: 'Compare the main mobile operators and pick the best plan for students arriving in France. A French number is required for most administrative registrations.',
+      officialLinks: JSON.stringify([
+        { label: 'ARCEP — compare mobile operators', url: 'https://www.arcep.fr/consumers/comparateur-offres.html' },
+        { label: 'Free Mobile', url: 'https://mobile.free.fr' },
+        { label: 'Sosh (Orange discount brand)', url: 'https://www.sosh.fr' },
+        { label: 'Lycamobile France', url: 'https://www.lycamobile.fr' },
+        { label: 'Lebara France', url: 'https://mobile.lebara.com/fr/fr' },
+      ]),
+      steps: JSON.stringify([
+        {
+          title: 'Start with a prepaid SIM on arrival',
+          description: 'Lycamobile and Lebara prepaid SIMs are available at airports, Relay kiosks, tabacs, and supermarkets for €10–15. They activate in minutes and require no French bank account.',
+          tip: 'Buy a prepaid SIM at the airport before leaving arrivals. You will need a working French number immediately for everything from RATP to CAF registration.',
+        },
+        {
+          title: 'Choose your long-term operator',
+          description: 'Free Mobile offers a €2/month plan (2 GB data, unlimited calls within France) and a €19.99/month unlimited plan — both exceptional value for students. Sosh (Orange) is more reliable and often runs back-to-school promotions in September.',
+          tip: "Free Mobile's €2/month plan is a legendary student secret. It requires a French bank account or credit card — get your bank account set up first, then switch.",
+        },
+        {
+          title: 'Purchase and activate your SIM',
+          description: 'For subscription plans (Free, Sosh, Orange), visit a store or order online. Your SIM arrives by post within 2–3 days. Activate it by following the instructions on the packaging or in the activation email.',
+        },
+        {
+          title: 'Complete identity verification',
+          description: 'EU regulations require all operators to verify your identity. Upload a photo of your passport or national ID via the operator\'s app or website. This is usually done online within 24 hours of activation.',
+        },
+        {
+          title: 'Port your existing number (optional)',
+          description: 'If you want to keep a foreign number, ask your current operator for an RIO code (Relevé d\'Identité Opérateur) before switching. Provide this to your new French operator during sign-up.',
+        },
+      ]),
+      tips: 'Free Mobile\'s €2/month plan is the best-known student secret in France: 2 GB data, unlimited calls and SMS within France. Requires a French payment method — set up your bank account first.\n\nFor the first few weeks while you are getting settled, a Lycamobile or Lebara prepaid SIM (€10–15, available at any Relay airport kiosk) covers all your basic needs and includes international SMS.\n\nSosh (Orange\'s discount brand) is a reliable middle-ground option and frequently has student promotions at the start of the academic year (September).\n\nKeep your receipts. Some administrative forms ask for proof of your mobile number registration.',
+    },
+  })
+
+  const guideBankAccount = await prisma.guide.create({
+    data: {
+      slug: 'open-bank-account',
+      checklistCategory: 'admin',
+      title: 'Open a French Bank Account',
+      summary: 'A French bank account is required for CAF, rent payments, and most employers. Most students use a two-account approach: a neobank immediately and a traditional bank for formal requirements.',
+      officialLinks: JSON.stringify([
+        { label: 'La Banque Postale — student accounts', url: 'https://www.labanquepostale.fr/particulier/comptes/compte-bancaire-etudiant.html' },
+        { label: 'Hello bank! by BNP Paribas', url: 'https://www.hellobank.fr' },
+        { label: 'Wise — multi-currency account (French IBAN)', url: 'https://wise.com/fr' },
+        { label: 'N26 — mobile bank', url: 'https://n26.com/fr-fr' },
+        { label: 'Banque de France — droit au compte', url: 'https://www.banque-france.fr/particuliers/services-bancaires/ouverture-de-compte/droit-au-compte' },
+      ]),
+      steps: JSON.stringify([
+        {
+          title: 'Open a Wise account immediately',
+          description: 'Wise can be opened online in under 10 minutes with just a passport. It gives you a French IBAN (FR76...) which is accepted by CAF, most French employers, and landlords. Use this for all spending while you wait for a traditional account.',
+          tip: "Wise's French IBAN is accepted by the majority of French services. Revolut only provides a Lithuanian IBAN for EU accounts, which some French services (including certain préfectures) reject.",
+        },
+        {
+          title: 'Gather documents for a traditional bank',
+          description: 'Most French banks require: valid passport or national ID, justificatif de domicile (utility bill, lease, or Attestation d\'hébergement), proof of student status (certificat de scolarité), and sometimes a scholarship letter or income proof.',
+          tip: 'Bring originals AND copies of every document. French bank staff will ask for a copy even if you are standing there with the original.',
+        },
+        {
+          title: 'Apply to La Banque Postale or BNP',
+          description: 'La Banque Postale is the most accessible for newcomers — it has a legal obligation (droit au compte) to open accounts for all French residents. BNP Paribas\'s Hello bank! offers lower fees and a good mobile app.',
+          tip: 'La Banque Postale is legally required to open a bank account for any resident who requests one. If another bank rejects you, go directly to La Banque Postale.',
+        },
+        {
+          title: 'Wait for your card and IBAN',
+          description: 'Traditional banks take 1–3 weeks to send your physical card. Your IBAN is usually available immediately in the app or online. Once you have your IBAN, update it with CAF, your university, and your employer.',
+        },
+        {
+          title: 'Update your IBAN everywhere',
+          description: 'Once your traditional account is open, update your IBAN on: CAF, CPAM, your university grants office, your employer\'s HR, and any subscription services.',
+        },
+      ]),
+      tips: 'Start with Wise. It takes 10 minutes, gives you a multi-currency account with a French IBAN, and you can pay for everything while you wait for your traditional bank account to open.\n\nFor the traditional account, La Banque Postale is the safest bet — by law they cannot refuse any resident. Bring everything in a folder with copies.\n\nN26 is convenient but their customer support is slow. For administrative purposes, Wise is more reliable than N26 for French services.\n\nIf you have income from outside France, Wise is excellent for converting it with low fees. Keep it open even after you get a French bank account.',
+    },
+  })
+
+  const guideCaf = await prisma.guide.create({
+    data: {
+      slug: 'caf-housing-aid',
+      checklistCategory: 'admin',
+      title: 'Apply for CAF Housing Aid (APL)',
+      summary: 'APL (Aide Personnalisée au Logement) is a French state housing subsidy available to most students renting in France. Amounts range from €50 to €250/month depending on city, rent, and income.',
+      officialLinks: JSON.stringify([
+        { label: 'CAF.fr — apply online (DALF)', url: 'https://www.caf.fr/allocataires/aides-et-demarches/droits-et-prestations/logement/les-aides-au-logement' },
+        { label: 'CAF — eligibility simulator', url: 'https://wwwd.caf.fr/wps/portal/caffr/aidesetservices/lesservicesenligne/estimervosdroits/lelogement' },
+        { label: 'CAF — create an account', url: 'https://www.caf.fr/allocataires/caf-de-paris/offre-de-service/ouvrir-mon-espace-client' },
+        { label: 'Service-Public — APL explained', url: 'https://www.service-public.fr/particuliers/vosdroits/F12006' },
+      ]),
+      steps: JSON.stringify([
+        {
+          title: 'Apply the day you sign your lease',
+          description: 'APL is calculated from the month of your application — not when it is approved or when you move in. Apply on the same day you sign your rental agreement.',
+          tip: 'CAF processing takes 4–6 months. You will receive back-payments retroactively from your application date, but you need to manage your budget without it during that period.',
+        },
+        {
+          title: 'Check your eligibility first',
+          description: 'Use the CAF online simulator (link above) before applying. You are likely eligible if: you rent a qualifying property, your income is below the threshold, and you are registered with a French university. Students with scholarships, part-time income, or no income can all qualify.',
+          tip: 'Even if you are unsure about eligibility, apply anyway. The simulator sometimes underestimates aid amounts.',
+        },
+        {
+          title: 'Create your CAF account',
+          description: 'Go to caf.fr and register with your personal details (name, date of birth, address, nationality). You will need a French email address and your French home address.',
+        },
+        {
+          title: 'Submit the DALF form',
+          description: 'Fill in the Demande d\'Aide au Logement (DALF) online. Required documents: signed lease (bail de location), bank account details (RIB), landlord details including SIRET number (if landlord is a company), and your income details (€0 for most students).',
+          tip: "If your landlord is a private individual (not a company), select 'particulier' as landlord type — they do not need a SIRET. Many private landlords rent without a SIRET and this is fine for CAF.",
+        },
+        {
+          title: 'Wait and track your file',
+          description: 'CAF will contact your landlord to verify the rental details. Track your file status in your CAF online account. First payments are typically received 4–6 months after application, then monthly thereafter.',
+        },
+      ]),
+      tips: 'Apply the day you sign your lease. This cannot be stressed enough. Every month you delay is a month\'s worth of aid you will not receive retroactively.\n\nHave a scan of your signed lease, your RIB (bank account details slip), your landlord\'s details, and a passport/ID ready before starting the online form. The session can time out and does not always save progress.\n\nJoin Facebook groups like "Expatriés en France" or "Étudiants internationaux en France" for real-time advice on common CAF error messages and rejections.\n\nAPL is paid at the end of the month following the month it covers. Your first payment will cover multiple months retroactively.',
+    },
+  })
+
+  const guideTitreSejour = await prisma.guide.create({
+    data: {
+      slug: 'titre-de-sejour-student',
+      checklistCategory: 'admin',
+      title: 'Apply for Titre de Séjour (Non-EU Students)',
+      summary: 'Non-EU students must either validate their VLS-TS visa online or apply for a residence permit. The process has moved primarily online via the ANEF portal. Missing deadlines can result in loss of legal status.',
+      officialLinks: JSON.stringify([
+        { label: 'ANEF — online residence permit portal', url: 'https://administration-etrangers-en-france.interieur.gouv.fr' },
+        { label: 'Service-Public — titre de séjour étudiant', url: 'https://www.service-public.fr/particuliers/vosdroits/F2209' },
+        { label: 'Campus France — student immigration', url: 'https://www.campusfrance.org/fr/venir-etudier-en-france/preparer-votre-sejour/les-visas-pour-etudier-en-france' },
+        { label: 'Service-Public — VLS-TS validation', url: 'https://www.service-public.fr/particuliers/vosdroits/F16003' },
+      ]),
+      steps: JSON.stringify([
+        {
+          title: 'Validate your VLS-TS visa within 3 months of arrival',
+          description: 'If you arrived on a VLS-TS (Long Stay Visa valid as Residence Permit), you must validate it online at ANEF within 3 months of your arrival date. This is free and takes about 15 minutes. Failure to validate invalidates your visa.',
+          tip: 'Do not confuse validation with a new application. Validation confirms your existing visa. You will receive a certificat de validation which serves as your residence permit for the full visa period.',
+        },
+        {
+          title: 'Apply for renewal 2–3 months before expiry',
+          description: 'If your studies continue beyond your visa or permit period, begin the renewal process at ANEF 2–3 months before your current document expires. Some préfectures still require in-person appointments — check your local préfecture\'s website.',
+          tip: 'Start early. Appointments at physical préfectures can be booked 6–8 weeks in advance and slots fill quickly at the start of the academic year.',
+        },
+        {
+          title: 'Prepare your documents',
+          description: 'Standard requirements: valid passport + most recent visa/permit, current university enrollment certificate (certificat de scolarité), proof of accommodation (lease or attestation d\'hébergement), proof of financial resources (bank statements or scholarship letter, typically €615/month), 2 passport photos, and proof of health insurance (CPAM number or student mutuelle policy).',
+          tip: 'Your university\'s international student services office (service des relations internationales) has handled hundreds of these applications. Visit them before starting — they know your préfecture\'s specific requirements.',
+        },
+        {
+          title: 'Submit via ANEF or in person',
+          description: 'Most renewals are processed via ANEF online. Upload all documents as PDF or JPEG. After submission, you receive a récépissé (receipt) by email, which serves as a legal temporary residence document while your application is processed.',
+          tip: 'Have all documents as PDF scans prepared before starting the ANEF session. The portal has a session timeout and does not always save progress between sessions.',
+        },
+        {
+          title: 'Track and collect your permit',
+          description: 'Processing takes 2–6 months depending on the préfecture. Track status via your ANEF account. You will be contacted when your card is ready for collection, usually at a préfecture counter. Bring your récépissé and passport to collect it.',
+        },
+      ]),
+      tips: 'The ANEF portal is now the primary route for most non-EU students at major préfectures. It is awkward but functional. Prepare all your PDFs before you open the form — the session can time out.\n\nThe récépissé you receive after submitting is a valid legal residence document. Keep a printed copy with you at all times.\n\nFrench passport photo requirements are strict (35×45 mm, white background, neutral expression, no glasses). Use a Photo Haton machine or pharmacie photo booth — many supermarkets have them. Do not use photos from another country.\n\nIf you receive a refusal, you have the right to appeal (recours). Your university\'s international office or a student legal aid service (APATEC, GISTI) can help.',
+    },
+  })
+
+  const guideNavigo = await prisma.guide.create({
+    data: {
+      slug: 'navigo-card',
+      checklistCategory: 'admin',
+      title: 'Set Up a Navigo Transport Card',
+      summary: 'The Navigo card gives you unlimited travel across all Île-de-France public transport (metro, RER, bus, tram). Students under 26 can get the Imagine R annual pass at roughly one-third the regular monthly price.',
+      officialLinks: JSON.stringify([
+        { label: 'Île-de-France Mobilités — all passes', url: 'https://www.iledefrance-mobilites.fr/titres-et-tarifs' },
+        { label: 'Imagine R — annual youth pass', url: 'https://www.iledefrance-mobilites.fr/titres-et-tarifs/detail/imagine-r' },
+        { label: 'Navigo Mois — monthly pass', url: 'https://www.iledefrance-mobilites.fr/titres-et-tarifs/detail/navigo-mois' },
+        { label: 'Navigo Easy — pay-per-use card', url: 'https://www.iledefrance-mobilites.fr/titres-et-tarifs/detail/navigo-easy' },
+        { label: 'RATP — buy and reload online', url: 'https://www.ratp.fr' },
+      ]),
+      steps: JSON.stringify([
+        {
+          title: 'Choose the right pass for you',
+          description: 'Imagine R (annual, under 26): ~€350/year (~€29/month) — best value for full academic year. Navigo Mois (monthly, all ages): ~€86.40/month — flexible but expensive. Navigo Easy (pay-per-use): €2 card + load tickets as needed — good for occasional travel.',
+          tip: "Imagine R is the clear winner if you are under 26 and staying for a full year. At €29/month vs €86/month, you save over €685 per year. Don't pay monthly if you qualify for Imagine R.",
+        },
+        {
+          title: 'Apply for Imagine R (if under 26)',
+          description: 'Applications open in September for the new academic year. Apply at a major RATP station (Châtelet-Les Halles, Gare du Nord, etc.) or online. You need: a student enrollment certificate, proof of age, a passport photo, and a French bank account for direct debit.',
+          tip: 'If you arrive after September, you can still get Imagine R mid-year — you just pay for the remaining months. The annual cycle runs September to August.',
+        },
+        {
+          title: 'Get a monthly Navigo pass',
+          description: 'Visit any staffed RATP ticket office or use a station machine with staff assistance. You need a passport photo and an ID. The Navigo card itself costs €5 (refundable) and is rechargeable.',
+        },
+        {
+          title: 'Set up automatic monthly reload',
+          description: 'On the RATP website or app, register your Navigo card number and set up a direct debit. Your card is automatically reloaded around the 20th of each month for the following month.',
+        },
+        {
+          title: 'Buy Navigo Easy for casual use',
+          description: 'If you travel infrequently, Navigo Easy (€2 contactless card, no photo needed) lets you pay per trip or buy a carnet (10-trip pack). Available from all station machines.',
+        },
+      ]),
+      tips: 'Imagine R at ~€29/month vs €86/month for a regular pass — the math is obvious. If you are under 26 and in Paris for a year, get Imagine R.\n\nThe monthly Navigo Mois pass covers all zones 1–5, meaning you can take the train to Versailles, both CDG and Orly airports, and Disneyland Paris — all included with no extra charge.\n\nFor Imagine R and named monthly passes, you need a 3.5×4.5 cm passport photo. Photo booths at major RATP stations dispense the right format — look for "Photo Haton" machines.\n\nIf your card is lost or stolen, report it immediately via the RATP app or at a station. The balance on personalized cards can be transferred to a replacement card.',
+    },
+  })
+
+  console.log('✓ Created 5 guides')
+
+  // ── Guide comments ───────────────────────────────────────
+  const pastDate = (daysAgo: number) => {
+    const d = new Date()
+    d.setDate(d.getDate() - daysAgo)
+    return d
+  }
+
+  await prisma.guideComment.createMany({
+    data: [
+      // SIM card
+      {
+        guideId: guideSimCard.id,
+        authorId: ambassador.id,
+        content: "The Free Mobile €2 plan was a game-changer for me. I used it for the first 6 months while I sorted out my main bank account, then it became my secondary SIM. The Lycamobile airport SIM tip is spot on — I bought one at CDG and it kept me connected for the whole first week.",
+        helpful: 14,
+        createdAt: pastDate(45),
+      },
+      {
+        guideId: guideSimCard.id,
+        authorId: newcomer.id,
+        content: "Just arrived last month and bought a Lebara SIM at the Relay in Gare du Nord. Activated in 10 minutes. Good tip about needing a French number for CPAM registration — I almost got stuck without it.",
+        helpful: 7,
+        createdAt: pastDate(12),
+      },
+      // Bank account
+      {
+        guideId: guideBankAccount.id,
+        authorId: ambassador.id,
+        content: "Start with Wise — this advice saved me so much stress. I had a French IBAN the same day I arrived. La Banque Postale took 3 weeks but was essential for my CAF application once the online form insisted on a French bank. The droit au compte law is real — I know someone who was rejected by three banks and LBP opened their account without any issue.",
+        helpful: 21,
+        createdAt: pastDate(60),
+      },
+      {
+        guideId: guideBankAccount.id,
+        authorId: newcomer.id,
+        content: "Wise worked for my CAF application — I was worried about this but it was fine. My French IBAN starts with FR76 which seems to be the key. The regular La Banque Postale application took 4 weeks but I could use Wise in the meantime for everything.",
+        helpful: 9,
+        createdAt: pastDate(8),
+      },
+      // CAF
+      {
+        guideId: guideCaf.id,
+        authorId: ambassador.id,
+        content: "The most important advice here: apply the same day you sign your lease. I applied 3 weeks late and lost €150 I will never get back. Also, the CAF form doesn't save properly between sessions — screenshot everything before you submit.",
+        helpful: 28,
+        createdAt: pastDate(90),
+      },
+      {
+        guideId: guideCaf.id,
+        authorId: newcomer.id,
+        content: "Applied the day I signed my lease following this guide. Currently 2 months in, no payment yet but the status shows 'en cours de traitement' which apparently is normal. The Facebook group for international students in France has been really helpful for interpreting the status messages.",
+        helpful: 11,
+        createdAt: pastDate(20),
+      },
+      // Titre de séjour
+      {
+        guideId: guideTitreSejour.id,
+        authorId: ambassador.id,
+        content: "The ANEF portal has improved a lot compared to 2 years ago when I had to go in person to the préfecture. My renewal last year was fully online. Key tip: download and save your récépissé immediately — it's a real legal document and you'll need it if you travel internationally before your card arrives.",
+        helpful: 19,
+        createdAt: pastDate(55),
+      },
+      {
+        guideId: guideTitreSejour.id,
+        authorId: newcomer.id,
+        content: "Validated my VLS-TS visa at ANEF within a week of arriving. The process took about 20 minutes online. I was nervous but it's genuinely straightforward — just have your passport and arrival date ready. The confirmation email arrived within 24 hours.",
+        helpful: 13,
+        createdAt: pastDate(15),
+      },
+      // Navigo
+      {
+        guideId: guideNavigo.id,
+        authorId: ambassador.id,
+        content: "I was on a monthly Navigo for 6 months before someone told me about Imagine R. I could have saved over €340. If you are under 26 and staying more than 3 months, Imagine R is not optional — it's a necessity. Applications can also be submitted at the RATP counters at Châtelet-Les Halles, which is open long hours.",
+        helpful: 16,
+        createdAt: pastDate(70),
+      },
+      {
+        guideId: guideNavigo.id,
+        authorId: newcomer.id,
+        content: "Got my Navigo Easy first week while sorting out the Imagine R application. The machines at Gare du Nord are straightforward. One tip: if you want to load t+ tickets (for zones outside monthly pass coverage), the machine UI is in French only — Google Translate camera mode works great for this.",
+        helpful: 8,
+        createdAt: pastDate(10),
+      },
+    ],
+  })
+
+  console.log('✓ Created guide comments')
+
   // ── Checklist for demo users ─────────────────────────────
   const GENERIC_ITEMS = [
-    { category: 'admin', title: 'Register at your local Mairie', description: 'Register your address at the town hall (declaration de domicile)', order: 1 },
-    { category: 'admin', title: 'Open a French bank account', description: 'Required for most services. Try La Banque Postale or a neobank like Wise.', order: 2 },
-    { category: 'health', title: 'Register with CPAM (Assurance Maladie)', description: 'Apply for French health insurance at ameli.fr', order: 3 },
-    { category: 'admin', title: 'Apply for CAF housing aid', description: 'Housing assistance (APL) from the French state at caf.fr', order: 4 },
-    { category: 'admin', title: 'Get a French SIM card', description: 'A local number is needed for most registrations and verifications', order: 5 },
-    { category: 'health', title: 'Obtain your Carte Vitale', description: 'Your health insurance card — apply once CPAM registration is confirmed', order: 6 },
-    { category: 'health', title: 'Register with a médecin traitant', description: 'Choose a primary care physician (required for full reimbursement)', order: 7 },
-    { category: 'admin', title: 'Set up a Navigo transport card', description: 'Monthly metro/bus pass for Île-de-France. Available at any station.', order: 8 },
-    { category: 'admin', title: 'Apply for titre de séjour (non-EU)', description: 'Submit residence permit application online', order: 9 },
-    { category: 'admin', title: 'Set up EDF or Engie (utilities)', description: 'Register electricity and gas in your name if renting', order: 10 },
-    { category: 'community', title: 'Explore your neighborhood', description: 'Find the nearest bakery, pharmacy, and supermarket', order: 11 },
-    { category: 'food', title: 'Visit a local market', description: 'Fresh produce, local culture, and affordable groceries', order: 12 },
-    { category: 'community', title: 'Join a local international group', description: 'Meetup.com or Facebook groups for expats in your city', order: 13 },
-    { category: 'culture', title: 'Get a library card (médiathèque)', description: 'Free access to books, films, and often free events', order: 14 },
-    { category: 'community', title: 'Attend a Tsunagari welcome event', description: 'Meet fellow newcomers and local ambassadors', order: 15 },
+    { category: 'admin', title: 'Register at your local Mairie', description: 'Register your address at the town hall (declaration de domicile)', order: 1, guideSlug: null },
+    { category: 'admin', title: 'Open a French bank account', description: 'Required for most services. Try La Banque Postale or a neobank like Wise.', order: 2, guideSlug: 'open-bank-account' },
+    { category: 'health', title: 'Register with CPAM (Assurance Maladie)', description: 'Apply for French health insurance at ameli.fr', order: 3, guideSlug: null },
+    { category: 'admin', title: 'Apply for CAF housing aid', description: 'Housing assistance (APL) from the French state at caf.fr', order: 4, guideSlug: 'caf-housing-aid' },
+    { category: 'admin', title: 'Get a French SIM card', description: 'A local number is needed for most registrations and verifications', order: 5, guideSlug: 'french-sim-card' },
+    { category: 'health', title: 'Obtain your Carte Vitale', description: 'Your health insurance card — apply once CPAM registration is confirmed', order: 6, guideSlug: null },
+    { category: 'health', title: 'Register with a médecin traitant', description: 'Choose a primary care physician (required for full reimbursement)', order: 7, guideSlug: null },
+    { category: 'admin', title: 'Set up a Navigo transport card', description: 'Monthly metro/bus pass for Île-de-France. Available at any station.', order: 8, guideSlug: 'navigo-card' },
+    { category: 'admin', title: 'Apply for titre de séjour (non-EU)', description: 'Submit residence permit application online', order: 9, guideSlug: 'titre-de-sejour-student' },
+    { category: 'admin', title: 'Set up EDF or Engie (utilities)', description: 'Register electricity and gas in your name if renting', order: 10, guideSlug: null },
+    { category: 'community', title: 'Explore your neighborhood', description: 'Find the nearest bakery, pharmacy, and supermarket', order: 11, guideSlug: null },
+    { category: 'food', title: 'Visit a local market', description: 'Fresh produce, local culture, and affordable groceries', order: 12, guideSlug: null },
+    { category: 'community', title: 'Join a local international group', description: 'Meetup.com or Facebook groups for expats in your city', order: 13, guideSlug: null },
+    { category: 'culture', title: 'Get a library card (médiathèque)', description: 'Free access to books, films, and often free events', order: 14, guideSlug: null },
+    { category: 'community', title: 'Attend a Tsunagari welcome event', description: 'Meet fellow newcomers and local ambassadors', order: 15, guideSlug: null },
   ]
 
   const JAPANESE_ITEMS = [
-    { category: 'admin', title: 'Register at Japanese Consulate', description: 'Notify the consulate of your residence in France (zaigai todoke)', order: 16 },
-    { category: 'community', title: 'Connect with the Japan Cultural Institute (ICJ)', description: 'Institut franco-japonais — events, language, community', order: 17 },
-    { category: 'admin', title: 'Transfer or renew your Japanese driving license', description: 'Exchange for a French license at the Préfecture', order: 18 },
-    { category: 'food', title: 'Find Japanese grocery stores', description: 'Kioko, Ace Mart in Paris / Épicerie du Monde in Lyon', order: 19 },
-    { category: 'community', title: 'Join a local Japanese community group', description: 'Association Franco-Japonaise or local Facebook groups', order: 20 },
+    { category: 'admin', title: 'Register at Japanese Consulate', description: 'Notify the consulate of your residence in France (zaigai todoke)', order: 16, guideSlug: null },
+    { category: 'community', title: 'Connect with the Japan Cultural Institute (ICJ)', description: 'Institut franco-japonais — events, language, community', order: 17, guideSlug: null },
+    { category: 'admin', title: 'Transfer or renew your Japanese driving license', description: 'Exchange for a French license at the Préfecture', order: 18, guideSlug: null },
+    { category: 'food', title: 'Find Japanese grocery stores', description: 'Kioko, Ace Mart in Paris / Épicerie du Monde in Lyon', order: 19, guideSlug: null },
+    { category: 'community', title: 'Join a local Japanese community group', description: 'Association Franco-Japonaise or local Facebook groups', order: 20, guideSlug: null },
   ]
 
   const BRAZILIAN_ITEMS = [
-    { category: 'admin', title: 'Register at Brazilian Consulate', description: 'Notify your consulate of your residence abroad', order: 16 },
-    { category: 'community', title: 'Find the Brazilian community in Paris', description: 'Facebook groups: Brasileiros em Paris', order: 17 },
-    { category: 'admin', title: 'Legalize your Brazilian documents', description: 'Get a Hague Apostille for diplomas and vital records', order: 18 },
-    { category: 'food', title: 'Find Brazilian grocery stores', description: 'Toko Brasil, O Mercadão — Brazilian products in France', order: 19 },
-    { category: 'culture', title: 'Find Portuguese language resources', description: 'FLUPA association for Lusophone community in France', order: 20 },
+    { category: 'admin', title: 'Register at Brazilian Consulate', description: 'Notify your consulate of your residence abroad', order: 16, guideSlug: null },
+    { category: 'community', title: 'Find the Brazilian community in Paris', description: 'Facebook groups: Brasileiros em Paris', order: 17, guideSlug: null },
+    { category: 'admin', title: 'Legalize your Brazilian documents', description: 'Get a Hague Apostille for diplomas and vital records', order: 18, guideSlug: null },
+    { category: 'food', title: 'Find Brazilian grocery stores', description: 'Toko Brasil, O Mercadão — Brazilian products in France', order: 19, guideSlug: null },
+    { category: 'culture', title: 'Find Portuguese language resources', description: 'FLUPA association for Lusophone community in France', order: 20, guideSlug: null },
   ]
 
   await prisma.checklistItem.createMany({
     data: [
       ...GENERIC_ITEMS.map((item) => ({ ...item, userId: newcomer.id, completed: false })),
       ...JAPANESE_ITEMS.map((item) => ({ ...item, userId: newcomer.id, completed: false })),
-      // Pre-complete some items for the newcomer
     ],
   })
 
@@ -217,7 +517,6 @@ async function main() {
     },
   })
 
-  // RSVP demo newcomer to first two experiences
   await prisma.experienceAttendee.create({
     data: { experienceId: exp1.id, userId: newcomer.id },
   })

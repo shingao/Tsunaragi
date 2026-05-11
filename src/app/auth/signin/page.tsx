@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { Divider } from '@/components/Divider'
+import { MyceliaLogo } from '@/components/MyceliaLogo'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
@@ -37,16 +38,29 @@ export default function SignInPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full">
-          <div className="border border-border bg-surface p-8 md:p-10">
-            <div className="text-accent text-2xl mb-6 select-none" aria-hidden>繋</div>
-            <div className="section-label mb-4">Magic link sent</div>
-            <h1 className="text-xl font-bold mb-4">Check your inbox</h1>
-            <p className="text-sm text-muted leading-relaxed mb-6">
-              We&apos;ve sent a sign-in link to <strong className="text-foreground">{email}</strong>.
-              Click the link in the email to continue.
+          <div
+            className="p-8 md:p-10"
+            style={{
+              border: '1px solid var(--line)',
+              backgroundColor: 'var(--surface)',
+              borderRadius: '4px',
+              boxShadow: '0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04)',
+            }}
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <MyceliaLogo size={20} color="var(--accent)" />
+            </div>
+            <div className="section-label mb-4">Link on its way</div>
+            <h1 className="text-xl font-serif mb-4" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              Check your inbox
+            </h1>
+            <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--muted)' }}>
+              We&apos;ve sent a sign-in link to{' '}
+              <strong style={{ color: 'var(--text)' }}>{email}</strong>.
+              Click the link to continue.
             </p>
             <Divider rhythm className="mb-6" />
-            <p className="text-xs text-muted">
+            <p className="text-xs" style={{ color: 'var(--muted)' }}>
               In development, the magic link is printed to the terminal console.
               Check your server logs.
             </p>
@@ -59,12 +73,25 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        <div className="border border-border bg-surface p-8 md:p-10">
-          <div className="text-accent text-2xl mb-6 select-none" aria-hidden>繋</div>
+        <div
+          className="p-8 md:p-10"
+          style={{
+            border: '1px solid var(--line)',
+            backgroundColor: 'var(--surface)',
+            borderRadius: '4px',
+            boxShadow: '0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04)',
+          }}
+        >
+          <div className="flex items-center gap-2 mb-6">
+            <MyceliaLogo size={24} color="var(--accent)" />
+            <span className="font-serif text-base" style={{ color: 'var(--text)', fontWeight: 500 }}>Mycelia</span>
+          </div>
 
-          <div className="section-label mb-2">Welcome</div>
-          <h1 className="text-xl font-bold mb-2">Sign in to Tsunagari</h1>
-          <p className="text-sm text-muted mb-8">
+          <div className="section-label mb-2">Welcome back</div>
+          <h1 className="text-xl font-serif mb-2" style={{ color: 'var(--text)', fontWeight: 500 }}>
+            Sign in to Mycelia
+          </h1>
+          <p className="text-sm mb-8" style={{ color: 'var(--muted)' }}>
             Enter your email address. We&apos;ll send you a magic link — no password needed.
           </p>
 
@@ -86,13 +113,13 @@ export default function SignInPage() {
             </div>
 
             {error && (
-              <p className="text-xs text-red-600">{error}</p>
+              <p className="text-xs" style={{ color: '#c0392b' }}>{error}</p>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full justify-center"
+              className="btn-primary w-full justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {loading ? 'Sending...' : 'Send magic link'}
             </button>
@@ -100,9 +127,9 @@ export default function SignInPage() {
 
           <Divider className="my-6" />
 
-          <p className="text-xs text-muted">
-            New to Tsunagari?{' '}
-            <Link href="/auth/signin" className="text-foreground underline">
+          <p className="text-xs" style={{ color: 'var(--muted)' }}>
+            New to Mycelia?{' '}
+            <Link href="/auth/signin" className="underline" style={{ color: 'var(--text)' }}>
               Just sign in
             </Link>{' '}
             — your account is created automatically.

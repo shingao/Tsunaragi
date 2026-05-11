@@ -14,14 +14,20 @@ export default function CreateStoryPage() {
   const [error, setError] = useState('')
 
   if (status === 'loading') {
-    return <div className="max-w-3xl mx-auto px-4 py-10"><span className="section-label">Loading...</span></div>
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <span className="section-label">Loading...</span>
+      </div>
+    )
   }
 
   if (!session) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-10 text-center">
-        <p className="text-sm text-muted mb-4">You must be signed in to write a story.</p>
-        <Link href="/auth/signin" className="btn-primary text-xs">Sign in</Link>
+        <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>
+          You must be signed in to write a story.
+        </p>
+        <Link href="/auth/signin" className="btn-primary text-sm">Sign in</Link>
       </div>
     )
   }
@@ -57,15 +63,21 @@ export default function CreateStoryPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <div className="mb-6">
-        <Link href="/stories" className="text-xs text-muted hover:text-foreground transition-colors">
+        <Link
+          href="/stories"
+          className="text-xs transition-colors"
+          style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+        >
           ← Stories
         </Link>
       </div>
 
       <div className="mb-8">
         <div className="section-label mb-1">Share</div>
-        <h1 className="text-2xl font-bold tracking-tight">Write your story</h1>
-        <p className="text-sm text-muted mt-2">
+        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+          Write your story
+        </h1>
+        <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
           Share your arrival experience to help others on the same journey.
         </p>
       </div>
@@ -107,10 +119,14 @@ export default function CreateStoryPage() {
             placeholder="housing, admin, community (comma-separated)"
             className="input-field"
           />
-          <p className="text-[10px] text-muted mt-1.5">Separate tags with commas.</p>
+          <p className="text-[10px] mt-1.5" style={{ color: 'var(--muted)' }}>
+            Separate tags with commas.
+          </p>
         </div>
 
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && (
+          <p className="text-xs" style={{ color: '#c0392b' }}>{error}</p>
+        )}
 
         <div className="flex gap-3 pt-2">
           <button

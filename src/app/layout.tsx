@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
-import { Space_Mono, Inter } from 'next/font/google'
+import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
 import { Nav } from '@/components/Nav'
 
-const spaceMono = Space_Mono({
-  weight: ['400', '700'],
+const fraunces = Fraunces({
   subsets: ['latin'],
-  variable: '--font-space-mono',
+  variable: '--font-fraunces',
   display: 'swap',
+  axes: ['SOFT', 'WONK'],
 })
 
 const inter = Inter({
@@ -17,10 +17,16 @@ const inter = Inter({
   display: 'swap',
 })
 
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-jetbrains',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: 'Tsunagari 繋がり',
-  description: 'Connection. Helping international students arrive in France and become local ambassadors.',
-  keywords: ['international students', 'France', 'expat', 'Paris', 'Lyon', 'community'],
+  title: 'Mycelia',
+  description: 'Arrive in France. Put down roots. Grow together.',
+  keywords: ['international students', 'France', 'expat', 'Paris', 'Lyon', 'community', 'newcomers'],
 }
 
 export default function RootLayout({
@@ -29,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${spaceMono.variable} ${inter.variable}`}>
-      <body className="font-sans bg-background text-foreground min-h-screen">
+    <html lang="en" className={`${fraunces.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+      <body className="font-sans bg-bg text-text min-h-screen">
         <Providers>
           <Nav />
           <main className="min-h-[calc(100vh-4rem)]">

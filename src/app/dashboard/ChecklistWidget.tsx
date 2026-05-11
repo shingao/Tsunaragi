@@ -59,67 +59,110 @@ export function ChecklistWidget({ items: initialItems }: ChecklistWidgetProps) {
         const isExpanded = expanded === category
 
         return (
-          <div key={category} className="border border-border">
+          <div
+            key={category}
+            style={{ border: '1px solid var(--line)', borderRadius: '4px', overflow: 'hidden' }}
+          >
             <button
-              className="w-full flex items-center justify-between px-4 py-3 hover:bg-muted-bg transition-colors duration-150"
+              className="w-full flex items-center justify-between px-4 py-3 transition-colors duration-150"
+              style={{ backgroundColor: isExpanded ? 'var(--surface-alt)' : 'var(--surface)' }}
               onClick={() => setExpanded(isExpanded ? null : category)}
             >
               <div className="flex items-center gap-3">
                 <span className="section-label">{CATEGORY_LABELS[category] ?? category}</span>
-                <span className="text-[10px] text-muted">{catCompleted}/{catItems.length}</span>
+                <span
+                  className="text-[10px]"
+                  style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                >
+                  {catCompleted}/{catItems.length}
+                </span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-16 h-0.5 bg-muted-bg overflow-hidden">
+                <div
+                  className="w-16 h-1 overflow-hidden"
+                  style={{ backgroundColor: 'var(--line)', borderRadius: '2px' }}
+                >
                   <div
-                    className="h-full bg-accent transition-all duration-300"
-                    style={{ width: `${catItems.length > 0 ? (catCompleted / catItems.length) * 100 : 0}%` }}
+                    className="h-full transition-all duration-300"
+                    style={{
+                      width: `${catItems.length > 0 ? (catCompleted / catItems.length) * 100 : 0}%`,
+                      backgroundColor: catCompleted === catItems.length ? 'var(--success)' : 'var(--accent)',
+                    }}
                   />
                 </div>
-                <span className="text-muted text-xs">{isExpanded ? '−' : '+'}</span>
+                <span className="text-xs" style={{ color: 'var(--muted)' }}>{isExpanded ? '−' : '+'}</span>
               </div>
             </button>
 
             {isExpanded && (
-              <div className="border-t border-border divide-y divide-border">
-                {catItems.map((item) => (
+              <div style={{ borderTop: '1px solid var(--line)' }}>
+                {catItems.map((item, idx) => (
                   <div
                     key={item.id}
                     className={cn(
                       'flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors duration-150',
-                      item.completed ? 'bg-muted-bg/50' : 'hover:bg-muted-bg/30'
                     )}
+                    style={{
+                      backgroundColor: item.completed ? 'var(--success-soft)' : undefined,
+                      borderTop: idx > 0 ? '1px solid var(--line)' : undefined,
+                      opacity: loading === item.id ? 0.5 : 1,
+                    }}
                     onClick={() => toggle(item)}
                   >
-                    <div className={cn(
-                      'mt-0.5 w-4 h-4 border flex items-center justify-center shrink-0 transition-all duration-150',
-                      item.completed ? 'bg-accent border-accent' : 'border-border',
-                      loading === item.id && 'opacity-50'
-                    )}>
+                    {/* Custom checkbox */}
+                    <div
+                      className="mt-0.5 w-4 h-4 flex items-center justify-center shrink-0 transition-all duration-150"
+                      style={{
+                        border: '1px solid',
+                        borderColor: item.completed ? 'var(--success)' : 'var(--line)',
+                        backgroundColor: item.completed ? 'var(--success)' : 'var(--surface)',
+                        borderRadius: '3px',
+                      }}
+                    >
                       {item.completed && (
                         <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-                          <path d="M1 3L3 5L7 1" stroke="#FBF8F3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          <path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       )}
                     </div>
+
                     <div className="flex-1 min-w-0">
-                      <div className={cn(
-                        'text-xs font-bold transition-colors',
-                        item.completed ? 'text-muted line-through' : 'text-foreground'
-                      )}>
+                      <div
+                        className="text-xs font-medium transition-colors"
+                        style={{
+                          color: item.completed ? 'var(--muted)' : 'var(--text)',
+                          textDecoration: item.completed ? 'line-through' : 'none',
+                        }}
+                      >
                         {item.title}
                       </div>
                       {item.description && (
-                        <div className="text-[11px] text-muted mt-0.5 leading-relaxed">
+                        <div className="text-[11px] mt-0.5 leading-relaxed" style={{ color: 'var(--muted)' }}>
                           {item.description}
                         </div>
                       )}
                     </div>
+
                     {item.guideSlug && (
                       <a
                         href={`/guides/${item.guideSlug}`}
                         onClick={(e) => e.stopPropagation()}
                         title="View step-by-step guide"
-                        className="shrink-0 mt-0.5 w-5 h-5 border border-border flex items-center justify-center text-[10px] text-muted hover:border-accent hover:text-accent transition-colors duration-150 font-mono"
+                        className="shrink-0 mt-0.5 w-5 h-5 flex items-center justify-center text-[10px] transition-colors duration-150"
+                        style={{
+                          border: '1px solid var(--line)',
+                          color: 'var(--muted)',
+                          borderRadius: '3px',
+                          fontFamily: 'var(--font-jetbrains), monospace',
+                        }}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'
+                          ;(e.currentTarget as HTMLElement).style.color = 'var(--accent)'
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.borderColor = 'var(--line)'
+                          ;(e.currentTarget as HTMLElement).style.color = 'var(--muted)'
+                        }}
                       >
                         ?
                       </a>

@@ -22,9 +22,9 @@ export default async function ExperiencesPage() {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="section-label mb-1">Community</div>
-        <h1 className="text-2xl font-bold tracking-tight">Experiences</h1>
-        <p className="text-sm text-muted mt-2">
-          Events, workshops, and gatherings hosted by the Tsunagari community.
+        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>Experiences</h1>
+        <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
+          Events, workshops, and gatherings hosted by the Mycelia community.
         </p>
       </div>
 
@@ -32,8 +32,8 @@ export default async function ExperiencesPage() {
 
       {upcoming.length === 0 && past.length === 0 ? (
         <div className="text-center py-20">
-          <div className="text-accent text-3xl mb-4 select-none" aria-hidden>繋</div>
-          <p className="text-sm text-muted">No experiences yet. Check back soon.</p>
+          <div className="text-4xl mb-4 select-none" aria-hidden>🌱</div>
+          <p className="text-sm" style={{ color: 'var(--muted)' }}>No experiences yet. Check back soon.</p>
         </div>
       ) : (
         <div className="space-y-10">
@@ -85,9 +85,12 @@ function ExperienceCard({
 
   return (
     <Link href={`/experiences/${experience.id}`} className="block group">
-      <div className="border border-border bg-surface p-5 h-full flex flex-col hover:border-accent transition-colors duration-150">
+      <div className="p-5 h-full flex flex-col transition-colors duration-150" style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
+        onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => (e.currentTarget.style.borderColor = 'var(--accent)')}
+        onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => (e.currentTarget.style.borderColor = 'var(--line)')}
+      >
         <div className="flex items-start justify-between gap-2 mb-3">
-          <span className="text-[10px] text-muted uppercase tracking-widest">{experience.city}</span>
+          <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}>{experience.city}</span>
           {!past && (
             <span className={`text-[10px] uppercase tracking-widest font-bold ${isFull ? 'text-red-500' : 'text-accent'}`}>
               {isFull ? 'Full' : `${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} left`}
@@ -95,11 +98,11 @@ function ExperienceCard({
           )}
         </div>
 
-        <h3 className="text-sm font-bold text-foreground group-hover:text-accent transition-colors line-clamp-2 mb-2 flex-1">
+        <h3 className="text-sm font-medium line-clamp-2 mb-2 flex-1 transition-colors" style={{ color: 'var(--text)' }}>
           {experience.title}
         </h3>
 
-        <p className="text-xs text-muted line-clamp-2 mb-4 leading-relaxed">
+        <p className="text-xs line-clamp-2 mb-4 leading-relaxed" style={{ color: 'var(--muted)' }}>
           {experience.description}
         </p>
 
@@ -107,14 +110,14 @@ function ExperienceCard({
 
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-[10px] text-muted">{formatDate(experience.date)}</div>
-            <div className="text-[10px] text-muted mt-0.5">
+            <div className="text-[10px]" style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}>{formatDate(experience.date)}</div>
+            <div className="text-[10px] mt-0.5" style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}>
               {experience.attendees.length}/{experience.capacity} attending
             </div>
           </div>
           <div className="text-right">
-            <div className="text-[10px] text-muted">Hosted by</div>
-            <div className="text-[10px] text-foreground font-bold">{experience.host.name ?? 'Community'}</div>
+            <div className="text-[10px]" style={{ color: 'var(--muted)' }}>Hosted by</div>
+            <div className="text-[10px] font-medium" style={{ color: 'var(--text)' }}>{experience.host.name ?? 'Community'}</div>
             <StatusBadge status={experience.host.status} className="mt-0.5" />
           </div>
         </div>

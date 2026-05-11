@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { StatusBadge } from '@/components/StatusBadge'
 import { Divider } from '@/components/Divider'
+import { MyceliaLogo } from '@/components/MyceliaLogo'
 import { parseJsonArray, formatDate } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -34,9 +35,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   if (!user) notFound()
 
   const languages = parseJsonArray(user.languages)
-
-  const contributionCount =
-    user.storiesWritten.length + user.placesAdded.length
+  const contributionCount = user.storiesWritten.length + user.placesAdded.length
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -44,35 +43,55 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
         <div className="md:col-span-2">
           <div className="flex items-start gap-5">
-            <div className="w-14 h-14 border border-border flex items-center justify-center shrink-0">
-              <span className="text-accent text-xl" aria-hidden>繋</span>
+            <div
+              className="w-14 h-14 flex items-center justify-center shrink-0"
+              style={{
+                border: '1px solid var(--line)',
+                borderRadius: '4px',
+                backgroundColor: 'var(--surface-alt)',
+              }}
+            >
+              <MyceliaLogo size={24} color="var(--accent)" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">
+              <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
                 {user.name ?? 'Community Member'}
               </h1>
-              <StatusBadge status={user.status} className="mt-1.5" />
+              <StatusBadge status={user.status} className="mt-1.5" showTooltip />
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 {user.nationality && (
-                  <span className="text-xs text-muted">{user.nationality}</span>
+                  <span className="text-xs" style={{ color: 'var(--muted)' }}>{user.nationality}</span>
                 )}
                 {user.city && (
-                  <span className="text-xs text-muted">·</span>
-                )}
-                {user.city && (
-                  <span className="text-xs text-muted">{user.city}</span>
+                  <>
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>·</span>
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>{user.city}</span>
+                  </>
                 )}
                 {user.arrivalDate && (
                   <>
-                    <span className="text-xs text-muted">·</span>
-                    <span className="text-xs text-muted">Arrived {formatDate(user.arrivalDate)}</span>
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>·</span>
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                      Arrived {formatDate(user.arrivalDate)}
+                    </span>
                   </>
                 )}
               </div>
               {languages.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
                   {languages.map((lang) => (
-                    <span key={lang} className="text-[10px] border border-border px-2 py-0.5 text-muted uppercase tracking-widest">
+                    <span
+                      key={lang}
+                      className="text-[10px] px-2 py-0.5"
+                      style={{
+                        border: '1px solid var(--line)',
+                        color: 'var(--muted)',
+                        borderRadius: '3px',
+                        fontFamily: 'var(--font-jetbrains), monospace',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.06em',
+                      }}
+                    >
                       {lang}
                     </span>
                   ))}
@@ -82,32 +101,35 @@ export default async function ProfilePage({ params }: { params: { id: string } }
           </div>
 
           {user.bio && (
-            <p className="text-sm text-muted leading-relaxed mt-6 max-w-lg">
+            <p className="text-sm leading-relaxed mt-6 max-w-lg" style={{ color: 'var(--muted)' }}>
               {user.bio}
             </p>
           )}
         </div>
 
         {/* Stats */}
-        <div className="border border-border bg-surface p-5">
+        <div
+          className="p-5"
+          style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
+        >
           <div className="section-label mb-4">Contributions</div>
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-2xl font-bold">{user.storiesWritten.length}</div>
-              <div className="text-[10px] text-muted uppercase tracking-widest">Stories</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">{user.placesAdded.length}</div>
-              <div className="text-[10px] text-muted uppercase tracking-widest">Places</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">{user.hostedExperiences.length}</div>
-              <div className="text-[10px] text-muted uppercase tracking-widest">Events</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">{contributionCount}</div>
-              <div className="text-[10px] text-muted uppercase tracking-widest">Total</div>
-            </div>
+            {[
+              { count: user.storiesWritten.length, label: 'Stories' },
+              { count: user.placesAdded.length, label: 'Places' },
+              { count: user.hostedExperiences.length, label: 'Events' },
+              { count: contributionCount, label: 'Total' },
+            ].map(({ count, label }) => (
+              <div key={label}>
+                <div className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 400 }}>{count}</div>
+                <div
+                  className="text-[10px] uppercase tracking-widest"
+                  style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                >
+                  {label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -122,13 +144,23 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             <div className="space-y-3">
               {user.storiesWritten.map((story) => (
                 <Link key={story.id} href={`/stories/${story.id}`} className="block group">
-                  <div className="text-xs font-bold text-foreground group-hover:text-accent transition-colors">
+                  <div
+                    className="text-sm font-medium transition-colors"
+                    style={{ color: 'var(--text)' }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
+                  >
                     {story.title}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-[10px] text-muted">{formatDate(story.createdAt)}</span>
+                    <span
+                      className="text-[10px]"
+                      style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                    >
+                      {formatDate(story.createdAt)}
+                    </span>
                     {parseJsonArray(story.tags).slice(0, 2).map((tag) => (
-                      <span key={tag} className="text-[10px] text-accent">#{tag}</span>
+                      <span key={tag} className="text-[10px]" style={{ color: 'var(--accent)' }}>#{tag}</span>
                     ))}
                   </div>
                 </Link>
@@ -140,32 +172,49 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         {/* Places added */}
         {user.placesAdded.length > 0 && (
           <div>
-            <div className="section-label mb-4">Places added</div>
+            <div className="section-label mb-4">Places shared</div>
             <div className="space-y-2">
               {user.placesAdded.map((place) => (
                 <div key={place.id} className="flex items-center gap-3">
-                  <span className="text-[10px] border border-border px-1.5 py-0.5 text-muted uppercase">
+                  <span
+                    className="text-[10px] px-1.5 py-0.5"
+                    style={{
+                      border: '1px solid var(--line)',
+                      color: 'var(--muted)',
+                      borderRadius: '3px',
+                      fontFamily: 'var(--font-jetbrains), monospace',
+                      textTransform: 'uppercase',
+                    }}
+                  >
                     {place.category.toLowerCase()}
                   </span>
-                  <span className="text-xs text-foreground">{place.name}</span>
-                  <span className="text-[10px] text-muted ml-auto">{place.city}</span>
+                  <span className="text-xs" style={{ color: 'var(--text)' }}>{place.name}</span>
+                  <span className="text-[10px] ml-auto" style={{ color: 'var(--muted)' }}>{place.city}</span>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Experiences */}
+        {/* Experiences hosted */}
         {user.hostedExperiences.length > 0 && (
           <div>
             <div className="section-label mb-4">Events hosted</div>
             <div className="space-y-3">
               {user.hostedExperiences.map((exp) => (
                 <Link key={exp.id} href={`/experiences/${exp.id}`} className="block group">
-                  <div className="text-xs font-bold text-foreground group-hover:text-accent transition-colors">
+                  <div
+                    className="text-sm font-medium transition-colors"
+                    style={{ color: 'var(--text)' }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
+                  >
                     {exp.title}
                   </div>
-                  <div className="text-[10px] text-muted mt-0.5">
+                  <div
+                    className="text-[10px] mt-0.5"
+                    style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                  >
                     {formatDate(exp.date)} · {exp.city}
                   </div>
                 </Link>

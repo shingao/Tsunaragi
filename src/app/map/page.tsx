@@ -10,7 +10,7 @@ async function geocodeCity(city: string): Promise<[number, number] | null> {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1`,
       {
-        headers: { 'User-Agent': 'Tsunagari/1.0' },
+        headers: { 'User-Agent': 'Mycelia/1.0' },
         next: { revalidate: 3600 },
       }
     )

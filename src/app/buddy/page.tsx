@@ -44,7 +44,6 @@ export default async function BuddyPage() {
   const activeRequest = asNewcomer.find((m) => m.status === 'PENDING' || m.status === 'ACTIVE')
   const isAmbassador = user.status === 'AMBASSADOR'
 
-  // Ambassadors matching same nationality+city go first
   const matchedAmbassadors = availableAmbassadors.filter(
     (a) => a.nationality === user.nationality && a.city === user.city
   )
@@ -56,10 +55,12 @@ export default async function BuddyPage() {
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="section-label mb-1">Connection</div>
-        <h1 className="text-2xl font-bold tracking-tight">Buddy System</h1>
-        <p className="text-sm text-muted mt-2 max-w-xl">
+        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+          Meet your local
+        </h1>
+        <p className="text-sm mt-2 max-w-xl leading-relaxed" style={{ color: 'var(--muted)' }}>
           Get matched with an ambassador who has walked your path, or become one
-          and help the next generation of newcomers.
+          and welcome the next person arriving.
         </p>
       </div>
 
@@ -68,22 +69,37 @@ export default async function BuddyPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Newcomer section */}
         <div>
-          <div className="section-label mb-4">Find a buddy</div>
+          <div className="section-label mb-4">Find a local</div>
 
           {activeRequest ? (
-            <div className="border border-border p-5 space-y-3">
-              <div className={`text-xs font-bold uppercase tracking-widest ${
-                activeRequest.status === 'ACTIVE' ? 'text-accent' : 'text-muted'
-              }`}>
+            <div
+              className="p-5 space-y-3"
+              style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+            >
+              <div
+                className="text-xs font-medium"
+                style={{
+                  color: activeRequest.status === 'ACTIVE' ? 'var(--success)' : 'var(--muted)',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}
+              >
                 {activeRequest.status === 'ACTIVE' ? 'Active match' : 'Request pending'}
               </div>
               <div>
-                <div className="font-bold text-sm">{activeRequest.ambassador.name ?? 'Ambassador'}</div>
+                <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+                  {activeRequest.ambassador.name ?? 'Ambassador'}
+                </div>
                 <StatusBadge status={activeRequest.ambassador.status} className="mt-1" />
-                <div className="text-xs text-muted mt-1">{activeRequest.ambassador.nationality} · {activeRequest.ambassador.city}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                  {activeRequest.ambassador.nationality} · {activeRequest.ambassador.city}
+                </div>
               </div>
               {activeRequest.ambassador.bio && (
-                <p className="text-xs text-muted leading-relaxed">{activeRequest.ambassador.bio}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+                  {activeRequest.ambassador.bio}
+                </p>
               )}
             </div>
           ) : (
@@ -101,7 +117,7 @@ export default async function BuddyPage() {
 
               {otherAmbassadors.length > 0 && (
                 <div>
-                  <Divider label="Other ambassadors" className="mb-4" />
+                  <Divider label="Other locals" className="mb-4" />
                   <div className="space-y-3">
                     {otherAmbassadors.slice(0, 5).map((amb) => (
                       <AmbassadorCard key={amb.id} ambassador={amb} userId={userId} />
@@ -111,14 +127,17 @@ export default async function BuddyPage() {
               )}
 
               {availableAmbassadors.length === 0 && (
-                <div className="border border-border p-6 text-center">
-                  <p className="text-sm text-muted">
-                    No ambassadors available right now. Check back soon.
+                <div
+                  className="p-6 text-center"
+                  style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+                >
+                  <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                    No locals available right now. Check back soon.
                   </p>
                 </div>
               )}
 
-              <BuddyActions action="request" label="Auto-match me with a buddy" />
+              <BuddyActions action="request" label="Auto-match me with a local" />
             </div>
           )}
         </div>
@@ -126,43 +145,62 @@ export default async function BuddyPage() {
         {/* Ambassador section */}
         <div>
           <div className="section-label mb-4">
-            {isAmbassador ? 'Your newcomers' : 'Become an ambassador'}
+            {isAmbassador ? 'People you are welcoming' : 'Become a local ambassador'}
           </div>
 
           {!isAmbassador ? (
-            <div className="border border-border p-6">
-              <div className="text-accent text-sm font-bold mb-3">Ambassador status required</div>
-              <p className="text-xs text-muted leading-relaxed mb-4">
+            <div
+              className="p-6"
+              style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+            >
+              <div className="text-sm font-medium mb-3" style={{ color: 'var(--accent)' }}>
+                Ambassador status required
+              </div>
+              <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--muted)' }}>
                 Ambassadors are settled members who have made 3 contributions:
-                adding a place, sharing a story, or hosting a buddy.
+                sharing a place, writing a story, or welcoming a newcomer.
                 Your status updates automatically as you contribute.
               </p>
-              <div className="text-[10px] text-muted uppercase tracking-widest">
-                Current status: <StatusBadge status={user.status} className="inline-flex" />
+              <div className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}>
+                Current status: <StatusBadge status={user.status} className="inline-flex ml-1" />
               </div>
             </div>
           ) : (
             <div className="space-y-3">
               {asAmbassador.length === 0 ? (
-                <div className="border border-border p-5 text-center">
-                  <p className="text-sm text-muted">No buddy requests yet.</p>
-                  <p className="text-xs text-muted mt-1">You will be notified when newcomers request you.</p>
+                <div
+                  className="p-5 text-center"
+                  style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+                >
+                  <p className="text-sm" style={{ color: 'var(--muted)' }}>No requests yet.</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                    You will be notified when newcomers reach out.
+                  </p>
                 </div>
               ) : (
                 asAmbassador.map((match) => (
-                  <div key={match.id} className="border border-border p-5">
+                  <div
+                    key={match.id}
+                    className="p-5"
+                    style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+                  >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="font-bold text-sm">{match.newcomer.name ?? 'Newcomer'}</div>
+                        <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+                          {match.newcomer.name ?? 'Newcomer'}
+                        </div>
                         <StatusBadge status={match.newcomer.status} className="mt-1" />
-                        <div className="text-xs text-muted mt-1">
+                        <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
                           {match.newcomer.nationality} · {match.newcomer.city}
                         </div>
                       </div>
-                      <span className={`text-[10px] uppercase tracking-widest font-bold ${
-                        match.status === 'ACTIVE' ? 'text-accent' :
-                        match.status === 'PENDING' ? 'text-muted' : 'text-muted'
-                      }`}>
+                      <span
+                        className="text-[10px] uppercase tracking-widest font-medium"
+                        style={{
+                          color: match.status === 'ACTIVE' ? 'var(--success)' : 'var(--muted)',
+                          fontFamily: 'var(--font-jetbrains), monospace',
+                        }}
+                      >
                         {match.status}
                       </span>
                     </div>
@@ -191,19 +229,26 @@ function AmbassadorCard({
   userId: string
 }) {
   return (
-    <div className="border border-border p-4">
+    <div
+      className="p-4"
+      style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-bold text-sm">{ambassador.name ?? 'Ambassador'}</div>
+          <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+            {ambassador.name ?? 'Ambassador'}
+          </div>
           <StatusBadge status={ambassador.status} className="mt-1" />
-          <div className="text-xs text-muted mt-1">
+          <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
             {ambassador.nationality} · {ambassador.city}
           </div>
           {ambassador.bio && (
-            <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-2">{ambassador.bio}</p>
+            <p className="text-xs mt-2 leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+              {ambassador.bio}
+            </p>
           )}
         </div>
-        <BuddyActions action="request-specific" ambassadorId={ambassador.id} label="Request" />
+        <BuddyActions action="request-specific" ambassadorId={ambassador.id} label="Connect" />
       </div>
     </div>
   )

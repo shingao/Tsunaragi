@@ -23,7 +23,7 @@ const GENERIC_ITEMS: ChecklistTemplate[] = [
   { category: 'food', title: 'Visit a local market', description: 'Fresh produce, local culture, and affordable groceries', order: 12 },
   { category: 'community', title: 'Join a local international group', description: 'Meetup.com or Facebook groups for expats in your city', order: 13 },
   { category: 'culture', title: 'Get a library card (médiathèque)', description: 'Free access to books, films, and often free events', order: 14 },
-  { category: 'community', title: 'Attend a Tsunagari welcome event', description: 'Meet fellow newcomers and local ambassadors', order: 15 },
+  { category: 'community', title: 'Attend a Mycelia welcome event', description: 'Meet fellow newcomers and local ambassadors', order: 15 },
 ]
 
 const NATIONALITY_ITEMS: Record<string, ChecklistTemplate[]> = {
@@ -55,7 +55,7 @@ const DEFAULT_NATIONALITY_ITEMS: ChecklistTemplate[] = [
   { category: 'community', title: 'Find your national community association', description: 'Search on Facebook Groups or Meetup for your nationality in your city', order: 17 },
   { category: 'admin', title: 'Legalize important documents', description: 'Get official translations and apostilles for diplomas and records', order: 18 },
   { category: 'food', title: 'Find familiar grocery stores', description: 'Asian, African, or international grocery stores in your city', order: 19 },
-  { category: 'community', title: 'Connect with a Tsunagari ambassador from your country', description: 'Request a buddy who shares your background', order: 20 },
+  { category: 'community', title: 'Meet a local ambassador from your country', description: 'Request a buddy who shares your background', order: 20 },
 ]
 
 export async function generateChecklist(

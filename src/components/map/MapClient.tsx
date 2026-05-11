@@ -60,7 +60,7 @@ function createPinIcon(category: string) {
   const color = CATEGORY_COLORS[category] ?? '#1A1A1A'
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" viewBox="0 0 24 32">
     <path d="M12 0C5.373 0 0 5.373 0 12c0 9 12 20 12 20S24 21 24 12C24 5.373 18.627 0 12 0z" fill="${color}" />
-    <circle cx="12" cy="12" r="5" fill="#F4EFE6" />
+    <circle cx="12" cy="12" r="5" fill="#FBF5EC" />
   </svg>`
   return L.divIcon({
     html: svg,
@@ -148,7 +148,7 @@ export default function MapClient({
     try {
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&featuretype=city`,
-        { headers: { 'User-Agent': 'Tsunagari/1.0' } }
+        { headers: { 'User-Agent': 'Mycelia/1.0' } }
       )
       const data: NominatimResult[] = await res.json()
       setSearchResults(data)

@@ -71,24 +71,24 @@ export default async function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-10">
         <div>
           <div className="section-label mb-1">Dashboard</div>
-          <h1 className="text-2xl font-bold tracking-tight">
+          <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
             {user.name ?? user.email}
           </h1>
           <div className="flex items-center gap-3 mt-2">
-            <StatusBadge status={user.status} />
+            <StatusBadge status={user.status} showTooltip />
             {user.city && (
-              <span className="text-xs text-muted">{user.city}</span>
+              <span className="text-xs" style={{ color: 'var(--muted)' }}>{user.city}</span>
             )}
             {user.arrivalDate && (
-              <span className="text-xs text-muted">Arrived {formatDate(user.arrivalDate)}</span>
+              <span className="text-xs" style={{ color: 'var(--muted)' }}>Arrived {formatDate(user.arrivalDate)}</span>
             )}
           </div>
         </div>
         <div className="flex gap-2">
-          <Link href={`/profile/${userId}`} className="btn-ghost text-xs">
+          <Link href={`/profile/${userId}`} className="btn-ghost text-sm">
             View profile
           </Link>
-          <Link href="/onboarding" className="btn-ghost text-xs">
+          <Link href="/onboarding" className="btn-ghost text-sm">
             Edit profile
           </Link>
         </div>
@@ -100,15 +100,22 @@ export default async function DashboardPage() {
         {/* Checklist — 2/3 width */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
-            <div className="section-label">Arrival checklist</div>
-            <span className="text-xs text-muted">{completed}/{total} completed</span>
+            <div className="section-label">Your first steps</div>
+            <span className="text-xs" style={{ color: 'var(--muted)' }}>{completed}/{total} done</span>
           </div>
 
           {/* Progress bar */}
-          <div className="h-1 bg-muted-bg border border-border overflow-hidden" role="progressbar">
+          <div
+            className="h-1.5 overflow-hidden"
+            style={{ backgroundColor: 'var(--surface-alt)', border: '1px solid var(--line)', borderRadius: '4px' }}
+            role="progressbar"
+            aria-valuenow={progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
             <div
-              className="h-full bg-accent transition-all duration-500"
-              style={{ width: `${progress}%` }}
+              className="h-full transition-all duration-500"
+              style={{ width: `${progress}%`, backgroundColor: 'var(--accent)' }}
             />
           </div>
 
@@ -118,80 +125,113 @@ export default async function DashboardPage() {
         {/* Sidebar — 1/3 width */}
         <div className="space-y-5">
           {/* Buddy status */}
-          <div className="border border-border bg-surface p-5">
-            <div className="section-label mb-3">Buddy</div>
+          <div
+            className="p-5"
+            style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
+          >
+            <div className="section-label mb-3">Your local</div>
             {buddyAsNewcomer ? (
               <div>
-                <div className="text-xs text-muted mb-2">
+                <div className="text-xs mb-2" style={{ color: 'var(--muted)' }}>
                   {buddyAsNewcomer.status === 'PENDING' ? 'Request pending' : 'Matched with'}
                 </div>
-                <div className="font-bold text-sm">
+                <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
                   {buddyAsNewcomer.ambassador.name ?? 'Ambassador'}
                 </div>
                 <StatusBadge status={buddyAsNewcomer.ambassador.status} className="mt-1" />
-                <div className="text-xs text-muted mt-1">{buddyAsNewcomer.ambassador.nationality}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                  {buddyAsNewcomer.ambassador.nationality}
+                </div>
               </div>
             ) : (
               <div>
-                <p className="text-xs text-muted mb-3">
-                  Connect with an ambassador from your background.
+                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                  Connect with someone from your background who knows France.
                 </p>
-                <Link href="/buddy" className="btn-secondary text-xs">
-                  Find a buddy
+                <Link href="/buddy" className="btn-secondary text-sm">
+                  Meet your local
                 </Link>
               </div>
             )}
           </div>
 
           {/* Upcoming experiences */}
-          <div className="border border-border bg-surface p-5">
+          <div
+            className="p-5"
+            style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
+          >
             <div className="section-label mb-3">Upcoming</div>
             {experiences.length > 0 ? (
               <div className="space-y-3">
                 {experiences.map((exp) => (
                   <Link key={exp.id} href={`/experiences/${exp.id}`} className="block group">
-                    <div className="text-xs font-bold text-foreground group-hover:text-accent transition-colors line-clamp-1">
+                    <div
+                      className="text-xs font-medium group-hover:text-accent line-clamp-1 transition-colors"
+                      style={{ color: 'var(--text)' }}
+                    >
                       {exp.title}
                     </div>
-                    <div className="text-[10px] text-muted mt-0.5">
+                    <div
+                      className="text-[10px] mt-0.5"
+                      style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                    >
                       {new Date(exp.date).toLocaleDateString('en-GB', { month: 'short', day: 'numeric' })}
                       {' · '}{exp.attendees.length}/{exp.capacity}
                     </div>
                   </Link>
                 ))}
-                <Link href="/experiences" className="text-xs text-muted hover:text-foreground transition-colors">
+                <Link href="/experiences" className="text-xs transition-colors" style={{ color: 'var(--muted)' }}>
                   View all →
                 </Link>
               </div>
             ) : (
-              <p className="text-xs text-muted">No upcoming events in {user.city}.</p>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>No upcoming events in {user.city}.</p>
             )}
           </div>
 
           {/* Profile summary */}
-          <div className="border border-border bg-surface p-5">
+          <div
+            className="p-5"
+            style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
+          >
             <div className="section-label mb-3">Profile</div>
-            <div className="space-y-1.5 text-xs text-muted">
-              <div>Nationality: <span className="text-foreground">{user.nationality ?? '—'}</span></div>
-              <div>City: <span className="text-foreground">{user.city ?? '—'}</span></div>
-              <div>Languages: <span className="text-foreground">{languages.join(', ') || '—'}</span></div>
+            <div className="space-y-1.5 text-xs" style={{ color: 'var(--muted)' }}>
+              <div>Nationality: <span style={{ color: 'var(--text)' }}>{user.nationality ?? '—'}</span></div>
+              <div>City: <span style={{ color: 'var(--text)' }}>{user.city ?? '—'}</span></div>
+              <div>Languages: <span style={{ color: 'var(--text)' }}>{languages.join(', ') || '—'}</span></div>
             </div>
           </div>
 
-          {/* Ambassador path */}
+          {/* Growing your roots */}
           {user.status !== 'AMBASSADOR' && (
-            <div className="border border-accent/20 bg-accent/5 p-5">
-              <div className="text-accent text-xs font-bold uppercase tracking-widest mb-2">
-                Path to Ambassador
+            <div
+              className="p-5"
+              style={{
+                border: '1px solid',
+                borderColor: 'var(--accent-soft)',
+                backgroundColor: 'var(--accent-soft)',
+                borderRadius: '4px',
+              }}
+            >
+              <div
+                className="text-xs font-medium mb-2"
+                style={{
+                  color: 'var(--accent)',
+                  fontFamily: 'var(--font-jetbrains), monospace',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                }}
+              >
+                Growing your roots
               </div>
-              <p className="text-xs text-muted mb-3 leading-relaxed">
-                Earn ambassador status by making 3 contributions: add a place to the map,
-                share a story, or successfully host a buddy.
+              <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                Become an Ambassador by making 3 contributions: share a place,
+                write your story, or welcome someone.
               </p>
               <div className="space-y-1">
-                <Link href="/map" className="block text-xs text-accent hover:underline">→ Add a place</Link>
-                <Link href="/stories/create" className="block text-xs text-accent hover:underline">→ Share your story</Link>
-                <Link href="/buddy" className="block text-xs text-accent hover:underline">→ Host a newcomer</Link>
+                <Link href="/map" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Share a place</Link>
+                <Link href="/stories/create" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Share your story</Link>
+                <Link href="/buddy" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Welcome someone</Link>
               </div>
             </div>
           )}

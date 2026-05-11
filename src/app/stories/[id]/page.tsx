@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { StatusBadge } from '@/components/StatusBadge'
 import { Divider } from '@/components/Divider'
+import { MyceliaLogo } from '@/components/MyceliaLogo'
 import { parseJsonArray, formatDate } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
@@ -27,7 +28,11 @@ export default async function StoryDetailPage({ params }: { params: { id: string
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       <div className="mb-8">
-        <Link href="/stories" className="text-xs text-muted hover:text-foreground transition-colors">
+        <Link
+          href="/stories"
+          className="text-xs transition-colors"
+          style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+        >
           ← Stories
         </Link>
       </div>
@@ -38,17 +43,26 @@ export default async function StoryDetailPage({ params }: { params: { id: string
           <div className="flex items-center gap-3 mb-4 flex-wrap">
             <StatusBadge status={story.author.status} />
             {story.author.nationality && (
-              <span className="text-xs text-muted">{story.author.nationality}</span>
+              <span className="text-xs" style={{ color: 'var(--muted)' }}>{story.author.nationality}</span>
             )}
-            <span className="text-xs text-muted">{formatDate(story.createdAt)}</span>
+            <span
+              className="text-xs"
+              style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+            >
+              {formatDate(story.createdAt)}
+            </span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight leading-tight mb-4">
+          <h1 className="text-2xl md:text-3xl font-serif leading-tight mb-4" style={{ color: 'var(--text)', fontWeight: 400 }}>
             {story.title}
           </h1>
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <span key={tag} className="text-[10px] text-accent uppercase tracking-widest">
+                <span
+                  key={tag}
+                  className="text-[10px] uppercase tracking-widest"
+                  style={{ color: 'var(--accent)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                >
                   #{tag}
                 </span>
               ))}
@@ -59,29 +73,50 @@ export default async function StoryDetailPage({ params }: { params: { id: string
         <Divider className="mb-8" />
 
         {/* Content */}
-        <div className="text-sm text-foreground leading-[1.8] whitespace-pre-wrap mb-10">
+        <div
+          className="text-base leading-[1.9] whitespace-pre-wrap mb-10"
+          style={{ color: 'var(--text)', fontFamily: 'var(--font-inter), sans-serif' }}
+        >
           {story.content}
         </div>
 
         <Divider className="mb-8" />
 
-        {/* Author */}
-        <div className="flex items-start gap-5 bg-surface border border-border p-5">
-          <div className="w-10 h-10 border border-border flex items-center justify-center shrink-0">
-            <span className="text-accent text-sm" aria-hidden>繋</span>
+        {/* Author card */}
+        <div
+          className="flex items-start gap-5 p-5"
+          style={{
+            backgroundColor: 'var(--surface)',
+            border: '1px solid var(--line)',
+            borderRadius: '4px',
+          }}
+        >
+          <div
+            className="w-10 h-10 flex items-center justify-center shrink-0"
+            style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface-alt)' }}
+          >
+            <MyceliaLogo size={18} color="var(--accent)" />
           </div>
           <div>
-            <div className="font-bold text-sm mb-0.5">
-              <Link href={`/profile/${story.author.id}`} className="hover:text-accent transition-colors">
+            <div className="font-medium text-sm mb-0.5" style={{ color: 'var(--text)' }}>
+              <Link
+                href={`/profile/${story.author.id}`}
+                className="transition-colors hover:underline"
+                style={{ color: 'var(--text)' }}
+              >
                 {story.author.name ?? 'Anonymous'}
               </Link>
             </div>
             <StatusBadge status={story.author.status} />
             {story.author.nationality && (
-              <div className="text-xs text-muted mt-0.5">{story.author.nationality} · {story.author.city}</div>
+              <div className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
+                {story.author.nationality} · {story.author.city}
+              </div>
             )}
             {story.author.bio && (
-              <p className="text-xs text-muted mt-2 leading-relaxed">{story.author.bio}</p>
+              <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                {story.author.bio}
+              </p>
             )}
           </div>
         </div>
@@ -92,10 +127,20 @@ export default async function StoryDetailPage({ params }: { params: { id: string
             <div className="space-y-3">
               {otherStories.map((s) => (
                 <Link key={s.id} href={`/stories/${s.id}`} className="block group">
-                  <div className="text-xs font-bold text-foreground group-hover:text-accent transition-colors">
+                  <div
+                    className="text-sm font-medium transition-colors"
+                    style={{ color: 'var(--text)' }}
+                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
+                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
+                  >
                     {s.title}
                   </div>
-                  <div className="text-[10px] text-muted mt-0.5">{formatDate(s.createdAt)}</div>
+                  <div
+                    className="text-[10px] mt-0.5"
+                    style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                  >
+                    {formatDate(s.createdAt)}
+                  </div>
                 </Link>
               ))}
             </div>

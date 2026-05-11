@@ -3,14 +3,23 @@
 @tailwind utilities;
 
 :root {
-  --background: #F4EFE6;
-  --surface: #FBF8F3;
-  --foreground: #111111;
-  --accent: #6E2132;
-  --accent-hover: #8B2A3E;
-  --border: #D7CCBF;
-  --muted: #625A52;
-  --muted-bg: #EDE8DF;
+  --bg: #FBF5EC;
+  --surface: #FFFBF3;
+  --surface-alt: #F5EBD9;
+  --text: #1F1A15;
+  --muted: #7A6F62;
+  --line: #E5DACA;
+  --accent: #C45A3D;
+  --accent-hover: #D96A4A;
+  --accent-soft: #F4D9CC;
+  --success: #5A7A4A;
+  --success-soft: #DCE5D2;
+  --info: #6B8CAE;
+
+  /* Aliases for backward compat with old var names used in JS/inline */
+  --background: var(--bg);
+  --foreground: var(--text);
+  --border: var(--line);
 }
 
 * {
@@ -18,25 +27,28 @@
 }
 
 html {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-space-mono), 'Space Mono', monospace;
+  font-family: var(--font-fraunces), 'Fraunces', Georgia, serif;
 }
 
+h1 { font-weight: 400; }
+h2, h3 { font-weight: 500; }
+
 ::selection {
-  background-color: #6E2132;
-  color: #FBF8F3;
+  background-color: var(--accent);
+  color: var(--surface);
 }
 
 /* Scrollbar */
@@ -45,10 +57,10 @@ h1, h2, h3, h4, h5, h6 {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--line);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
@@ -57,13 +69,13 @@ h1, h2, h3, h4, h5, h6 {
 /* Leaflet overrides */
 .leaflet-container {
   font-family: var(--font-inter), 'Inter', sans-serif;
-  background: var(--muted-bg);
+  background: var(--surface-alt);
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: 2px;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04);
   font-family: var(--font-inter), 'Inter', sans-serif;
   font-size: 12px;
 }
@@ -85,45 +97,79 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @layer components {
+  /* ── Buttons ── */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-accent text-surface text-xs font-bold uppercase tracking-widest font-mono;
-    transition: all 150ms;
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium;
+    background-color: var(--accent);
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    transition: background-color 150ms;
   }
   .btn-primary:hover {
     background-color: var(--accent-hover);
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-foreground text-xs font-bold uppercase tracking-widest border border-foreground font-mono;
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--text);
+    border-radius: 4px;
     transition: all 150ms;
   }
   .btn-secondary:hover {
-    @apply bg-foreground text-background;
+    background-color: var(--text);
+    color: var(--bg);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2 bg-transparent text-muted text-xs uppercase tracking-widest border border-border font-mono;
+    @apply inline-flex items-center gap-2 px-4 py-2 text-sm;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 4px;
     transition: all 150ms;
   }
   .btn-ghost:hover {
-    @apply text-foreground border-foreground;
+    background-color: var(--surface-alt);
+    color: var(--text);
   }
 
+  /* ── Input ── */
   .input-field {
-    @apply w-full px-3 py-2 bg-surface border border-border text-foreground text-sm placeholder-muted;
-    @apply focus:outline-none focus:border-foreground;
+    @apply w-full px-3 py-2 text-sm;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--text);
     transition: border-color 150ms;
   }
+  .input-field::placeholder {
+    color: var(--muted);
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--text);
+  }
 
+  /* ── Labels ── */
   .section-label {
-    @apply text-xs uppercase tracking-widest text-muted font-bold font-mono;
+    @apply text-xs uppercase tracking-widest font-medium;
+    font-family: var(--font-jetbrains), 'JetBrains Mono', monospace;
+    color: var(--muted);
   }
 
+  /* ── Card ── */
   .card {
-    @apply border border-border bg-surface p-5;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1.25rem;
+    box-shadow: 0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04);
   }
 
+  /* ── Divider ── */
   .divider {
-    @apply border-t border-border;
+    border-top: 1px solid var(--line);
   }
 }

@@ -7,6 +7,7 @@ export function CommentForm({ slug }: { slug: string }) {
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,6 +27,8 @@ export function CommentForm({ slug }: { slug: string }) {
 
     if (res.ok) {
       setContent('')
+      setSuccess(true)
+      setTimeout(() => setSuccess(false), 3000)
       router.refresh()
     } else {
       const data = await res.json().catch(() => ({}))
@@ -34,24 +37,53 @@ export function CommentForm({ slug }: { slug: string }) {
     setSubmitting(false)
   }
 
+  const charCount = content.trim().length
+  const isReady = charCount >= 10
+
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Share your experience with this process..."
-        className="input-field resize-none text-sm"
+        className="input-field resize-none text-sm leading-relaxed"
         rows={4}
         required
       />
-      {error && <p className="text-xs text-red-600">{error}</p>}
-      <button
-        type="submit"
-        disabled={submitting || content.trim().length < 10}
-        className="btn-primary text-xs"
-      >
-        {submitting ? 'Posting...' : 'Post comment'}
-      </button>
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={submitting || !isReady}
+            className="btn-primary text-sm disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            {submitting ? 'Posting...' : 'Post comment'}
+          </button>
+          {success && (
+            <span
+              className="text-xs"
+              style={{ color: 'var(--success)', fontFamily: 'var(--font-jetbrains), monospace' }}
+            >
+              ✓ Posted
+            </span>
+          )}
+        </div>
+        <span
+          className="text-[10px]"
+          style={{
+            color: isReady ? 'var(--success)' : 'var(--muted)',
+            fontFamily: 'var(--font-jetbrains), monospace',
+            transition: 'color 200ms',
+          }}
+        >
+          {charCount} chars
+        </span>
+      </div>
+
+      {error && (
+        <p className="text-xs" style={{ color: '#c0392b' }}>{error}</p>
+      )}
     </form>
   )
 }

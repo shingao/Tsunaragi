@@ -52,7 +52,7 @@ export function GuidesSearch({ guides }: { guides: Guide[] }) {
       </div>
 
       {Object.keys(grouped).length === 0 ? (
-        <p className="text-sm text-muted">No guides match your search.</p>
+        <p className="text-sm" style={{ color: 'var(--muted)' }}>No guides match your search.</p>
       ) : (
         <div className="space-y-10">
           {Object.entries(grouped).map(([cat, catGuides]) => (
@@ -61,14 +61,29 @@ export function GuidesSearch({ guides }: { guides: Guide[] }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {catGuides.map((guide) => (
                   <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block group">
-                    <div className="border border-border bg-surface p-5 h-full hover:border-accent transition-colors duration-150">
-                      <div className="text-xs font-bold text-foreground group-hover:text-accent transition-colors mb-2">
+                    <div
+                      className="p-5 h-full transition-colors duration-150"
+                      style={{
+                        border: '1px solid var(--line)',
+                        backgroundColor: 'var(--surface)',
+                        borderRadius: '4px',
+                      }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)')}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--line)')}
+                    >
+                      <div
+                        className="text-sm font-medium mb-2 transition-colors group-hover:text-accent"
+                        style={{ color: 'var(--text)' }}
+                      >
                         {guide.title}
                       </div>
-                      <p className="text-[11px] text-muted leading-relaxed line-clamp-2 mb-3">
+                      <p className="text-[11px] leading-relaxed line-clamp-2 mb-3" style={{ color: 'var(--muted)' }}>
                         {guide.summary}
                       </p>
-                      <div className="text-[10px] text-muted font-mono uppercase tracking-widest">
+                      <div
+                        className="text-[10px] uppercase tracking-widest"
+                        style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
+                      >
                         {guide._count.comments} comment{guide._count.comments !== 1 ? 's' : ''}
                       </div>
                     </div>

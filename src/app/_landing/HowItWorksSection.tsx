@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useReveal } from './useReveal'
 
 /* ── SVG Illustrations ───────────────────────────────────────────── */
 
@@ -106,8 +106,7 @@ const FEATURES = [
 ]
 
 function FeatureCard({ feature, index }: { feature: typeof FEATURES[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' })
+  const { ref, hidden } = useReveal<HTMLDivElement>('-10% 0px')
   const { Illustration } = feature
 
   return (
@@ -120,8 +119,8 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0]; index: n
         padding: '2rem',
         backgroundColor: 'var(--surface)',
       }}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={false}
+      animate={hidden ? { opacity: 0, y: 28 } : { opacity: 1, y: 0 }}
       transition={{ duration: 0.65, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -3, transition: { duration: 0.2 } }}
     >
@@ -159,10 +158,7 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0]; index: n
 
       <a
         href={feature.href}
-        className="text-sm font-medium transition-colors duration-150"
-        style={{ color: 'var(--accent)' }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent-hover)' }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--accent)' }}
+        className="text-sm font-medium transition-colors duration-150 text-accent hover:text-accent-hover"
       >
         {feature.cta} →
       </a>
@@ -171,8 +167,7 @@ function FeatureCard({ feature, index }: { feature: typeof FEATURES[0]; index: n
 }
 
 export function HowItWorksSection() {
-  const headRef = useRef<HTMLDivElement>(null)
-  const headInView = useInView(headRef, { once: true, margin: '-10% 0px' })
+  const { ref: headRef, hidden: headHidden } = useReveal<HTMLDivElement>('-10% 0px')
 
   return (
     <section
@@ -185,8 +180,8 @@ export function HowItWorksSection() {
         <motion.div
           ref={headRef}
           className="mb-16 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={headInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={headHidden ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <div>

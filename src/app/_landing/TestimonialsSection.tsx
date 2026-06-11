@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useReveal } from './useReveal'
 
 const TESTIMONIALS = [
   {
@@ -34,9 +34,7 @@ const TESTIMONIALS = [
 ]
 
 function QuoteCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-10% 0px' })
-
+  const { ref, hidden } = useReveal<HTMLDivElement>('-10% 0px')
   const isMiddle = index === 1
 
   return (
@@ -48,8 +46,8 @@ function QuoteCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: number }) {
         border: '1px solid var(--line)',
         borderRadius: '4px',
       }}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={false}
+      animate={hidden ? { opacity: 0, y: 32 } : { opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Large quote mark */}
@@ -117,8 +115,7 @@ function QuoteCard({ t, index }: { t: typeof TESTIMONIALS[0]; index: number }) {
 }
 
 export function TestimonialsSection() {
-  const headRef = useRef<HTMLDivElement>(null)
-  const headInView = useInView(headRef, { once: true, margin: '-10% 0px' })
+  const { ref: headRef, hidden: headHidden } = useReveal<HTMLDivElement>('-10% 0px')
 
   return (
     <section
@@ -131,8 +128,8 @@ export function TestimonialsSection() {
         <motion.div
           ref={headRef}
           className="mb-16 max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={headInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={headHidden ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <span
@@ -161,23 +158,14 @@ export function TestimonialsSection() {
         </div>
 
         {/* Read more link */}
-        <motion.div
-          className="mt-12 text-right"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-        >
+        <div className="mt-12 text-right">
           <a
             href="/stories"
-            className="text-sm transition-colors duration-150"
-            style={{ color: 'var(--muted)' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--text)' }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = 'var(--muted)' }}
+            className="text-sm transition-colors duration-150 text-muted hover:text-text"
           >
             Read all stories →
           </a>
-        </motion.div>
+        </div>
 
       </div>
     </section>

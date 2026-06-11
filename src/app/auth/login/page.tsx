@@ -36,10 +36,7 @@ export default function LoginPage() {
 
   if (sent) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center px-4"
-        style={{ backgroundColor: 'var(--success-soft)' }}
-      >
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full">
           <div
             className="p-8 md:p-10"
@@ -51,9 +48,9 @@ export default function LoginPage() {
             }}
           >
             <div className="flex items-center gap-2 mb-6">
-              <MyceliaLogo size={20} color="var(--success)" />
+              <MyceliaLogo size={20} color="var(--accent)" />
             </div>
-            <div className="section-label mb-4" style={{ color: 'var(--success)' }}>Link on its way</div>
+            <div className="section-label mb-4">Link on its way</div>
             <h1 className="text-2xl font-serif mb-4" style={{ color: 'var(--text)', fontWeight: 500 }}>
               Check your inbox
             </h1>
@@ -74,10 +71,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ backgroundColor: 'var(--success-soft)' }}
-    >
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <div
           className="p-8 md:p-10"
@@ -86,15 +80,15 @@ export default function LoginPage() {
             backgroundColor: 'var(--surface)',
             borderRadius: '4px',
             boxShadow: '0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04)',
-            borderTop: '3px solid var(--success)',
+            borderTop: '3px solid var(--accent)',
           }}
         >
           <div className="flex items-center gap-2 mb-6">
-            <MyceliaLogo size={24} color="var(--success)" />
+            <MyceliaLogo size={24} color="var(--accent)" />
             <span className="font-serif text-base" style={{ color: 'var(--text)', fontWeight: 500 }}>Mycelia</span>
           </div>
 
-          <div className="section-label mb-2" style={{ color: 'var(--success)' }}>Existing account</div>
+          <div className="section-label mb-2" style={{ color: 'var(--accent)' }}>Existing account</div>
           <h1 className="text-2xl font-serif mb-2" style={{ color: 'var(--text)', fontWeight: 500 }}>
             Welcome back
           </h1>

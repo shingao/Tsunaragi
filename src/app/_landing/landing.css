@@ -1,0 +1,72 @@
+/* Landing entrance animations — pure CSS so the hero is visible
+   from the first paint, with or without JS/hydration. */
+
+@keyframes lpFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lpFadeLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes lpFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes lpDraw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes lpNodePop {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 0.7; transform: scale(1); }
+}
+@keyframes lpGlowPulse {
+  0%, 100% { opacity: 0.04; }
+  50%      { opacity: 0.08; }
+}
+@keyframes lpCenterPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.4); opacity: 0.6; }
+}
+@keyframes lpScrollPulse {
+  0%, 100% { transform: scaleY(1); }
+  50%      { transform: scaleY(0.4); }
+}
+
+.lp-fade-up   { animation: lpFadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.lp-fade-left { animation: lpFadeLeft 0.65s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.lp-fade-in   { animation: lpFadeIn 0.6s ease both; }
+
+.lp-edge {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.55;
+  animation: lpDraw 1.4s ease-out both;
+}
+.lp-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lpNodePop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.lp-glow {
+  opacity: 0.04;
+  animation: lpGlowPulse 2.4s ease-in-out 0.3s infinite;
+}
+.lp-center {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lpCenterPulse 3s ease-in-out 1.5s infinite;
+}
+.lp-scroll-bar {
+  transform-origin: top;
+  animation: lpScrollPulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-fade-up, .lp-fade-left, .lp-fade-in, .lp-edge, .lp-node,
+  .lp-glow, .lp-center, .lp-scroll-bar {
+    animation: none;
+  }
+  .lp-edge { stroke-dashoffset: 0; }
+}

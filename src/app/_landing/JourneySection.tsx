@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
+import { useReveal } from './useReveal'
 
 const STEPS = [
   {
@@ -37,15 +37,14 @@ const STEPS = [
 ]
 
 function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-15% 0px' })
+  const { ref, hidden } = useReveal<HTMLDivElement>('-15% 0px')
 
   return (
     <motion.div
       ref={ref}
       className="relative grid grid-cols-1 lg:grid-cols-[80px_1fr_1fr] gap-8 lg:gap-16 items-start"
-      initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      initial={false}
+      animate={hidden ? { opacity: 0, y: 40 } : { opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Phase number */}
@@ -63,9 +62,9 @@ function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
         {index < STEPS.length - 1 && (
           <motion.div
             className="w-px"
-            style={{ backgroundColor: 'var(--line)', height: '180px' }}
-            initial={{ scaleY: 0, originY: 0 }}
-            animate={inView ? { scaleY: 1 } : {}}
+            style={{ backgroundColor: 'var(--line)', height: '180px', originY: 0 }}
+            initial={false}
+            animate={hidden ? { scaleY: 0 } : { scaleY: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: 'easeInOut' }}
           />
         )}
@@ -91,8 +90,8 @@ function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
             fontWeight: 400,
             color: 'var(--text)',
           }}
-          initial={{ opacity: 0, x: -16 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
+          initial={false}
+          animate={hidden ? { opacity: 0, x: -16 } : { opacity: 1, x: 0 }}
           transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
           {step.headline}
@@ -102,8 +101,8 @@ function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
         <motion.div
           className="h-px mb-6"
           style={{ backgroundColor: step.accentLine, opacity: 0.5 }}
-          initial={{ width: 0 }}
-          animate={inView ? { width: 40 } : {}}
+          initial={false}
+          animate={hidden ? { width: 0 } : { width: 40 }}
           transition={{ duration: 0.5, delay: 0.35 }}
         />
 
@@ -123,8 +122,8 @@ function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
       <motion.p
         className="text-base leading-relaxed"
         style={{ color: 'var(--muted)' }}
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
+        initial={false}
+        animate={hidden ? { opacity: 0 } : { opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         {step.body}
@@ -134,8 +133,7 @@ function StepCard({ step, index }: { step: typeof STEPS[0]; index: number }) {
 }
 
 export function JourneySection() {
-  const headRef = useRef<HTMLDivElement>(null)
-  const headInView = useInView(headRef, { once: true, margin: '-10% 0px' })
+  const { ref: headRef, hidden: headHidden } = useReveal<HTMLDivElement>('-10% 0px')
 
   return (
     <section
@@ -148,8 +146,8 @@ export function JourneySection() {
         <motion.div
           ref={headRef}
           className="mb-20"
-          initial={{ opacity: 0, y: 20 }}
-          animate={headInView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={headHidden ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <span

@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { MyceliaLogo } from '@/components/MyceliaLogo'
+import { useReveal } from './useReveal'
 
 const LINKS = [
   { label: 'Guides', href: '/guides' },
@@ -14,8 +14,7 @@ const LINKS = [
 ]
 
 export function LandingFooter() {
-  const ref = useRef<HTMLElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-5% 0px' })
+  const { ref, hidden } = useReveal<HTMLElement>('-5% 0px')
 
   return (
     <footer
@@ -28,8 +27,8 @@ export function LandingFooter() {
         {/* Emotional closing line */}
         <motion.div
           className="mb-16 max-w-2xl"
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          initial={false}
+          animate={hidden ? { opacity: 0, y: 24 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <p
@@ -49,17 +48,17 @@ export function LandingFooter() {
         {/* Divider */}
         <motion.div
           className="h-px mb-12"
-          style={{ backgroundColor: 'var(--bg)', opacity: 0.12 }}
-          initial={{ scaleX: 0, originX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
+          style={{ backgroundColor: 'var(--bg)', opacity: 0.12, originX: 0 }}
+          initial={false}
+          animate={hidden ? { scaleX: 0 } : { scaleX: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         />
 
         {/* Bottom row */}
         <motion.div
           className="flex flex-col md:flex-row md:items-end justify-between gap-8"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          initial={false}
+          animate={hidden ? { opacity: 0 } : { opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
         >
           {/* Brand */}
@@ -91,10 +90,8 @@ export function LandingFooter() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm transition-colors duration-150"
-                style={{ color: 'var(--bg)', opacity: 0.55 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.opacity = '0.55' }}
+                className="text-sm opacity-55 hover:opacity-100 transition-opacity duration-150"
+                style={{ color: 'var(--bg)' }}
               >
                 {link.label}
               </Link>
@@ -111,31 +108,25 @@ export function LandingFooter() {
               borderRadius: '4px',
             }}
           >
-            <motion.span
-              className="absolute inset-0"
+            <span
+              className="absolute inset-0 -translate-x-full transition-transform duration-300 ease-out group-hover:translate-x-0"
               style={{ backgroundColor: 'var(--accent-hover)' }}
-              initial={{ x: '-101%' }}
-              whileHover={{ x: 0 }}
-              transition={{ duration: 0.22, ease: 'easeOut' }}
             />
             <span className="relative">Start your journey</span>
           </Link>
         </motion.div>
 
         {/* Fine print */}
-        <motion.p
+        <p
           className="mt-12 text-[10px]"
           style={{
             color: 'var(--bg)',
             opacity: 0.25,
             fontFamily: 'var(--font-jetbrains), monospace',
           }}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.25 } : {}}
-          transition={{ delay: 0.8, duration: 0.5 }}
         >
           © {new Date().getFullYear()} Mycelia — Made with care for the people who take the leap.
-        </motion.p>
+        </p>
 
       </div>
     </footer>

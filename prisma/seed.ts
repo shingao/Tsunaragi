@@ -264,6 +264,215 @@ async function main() {
 
   console.log('✓ Created 5 guides')
 
+  // ── Health guides ────────────────────────────────────────
+  const findDoctorData = {
+    slug: 'find-doctor',
+    checklistCategory: 'health',
+    title: 'Find a médecin traitant',
+    summary: 'Declaring a médecin traitant (primary care doctor) is required for full health insurance reimbursement. Without one, you are reimbursed at 30% instead of 70%. Doctolib makes finding one straightforward.',
+    officialLinks: JSON.stringify([
+      { label: 'Ameli — declare your médecin traitant', url: 'https://www.ameli.fr/assure/remboursements/etre-bien-rembourse/medecin-traitant-parcours-soins-coordonnes' },
+      { label: 'Doctolib — book a doctor online', url: 'https://www.doctolib.fr' },
+      { label: 'Maiia — alternative booking platform', url: 'https://www.maiia.com' },
+      { label: 'Santé.fr — find a doctor near you', url: 'https://www.sante.fr' },
+    ]),
+    steps: JSON.stringify([
+      {
+        title: 'Understand why you need one',
+        description: 'France uses a "parcours de soins coordonnés" system. With a declared médecin traitant, consultations are reimbursed at 70% by CPAM. Without one, the rate drops to 30% and specialists may charge more. Your médecin traitant is also your gateway to specialist referrals.',
+        tip: 'You can see any doctor without a médecin traitant, but you will pay significantly more out of pocket. Declare one as soon as you have your numéro de sécurité sociale.',
+      },
+      {
+        title: 'Search on Doctolib',
+        description: 'Create a free Doctolib account and search "médecin généraliste" in your city or arrondissement. Use the filters to narrow down: accepts new patients, speaks English, secteur 1 (no extra fees), and video consultation availability.',
+        tip: 'Filter by "Accepte de nouveaux patients" — many Paris doctors have full patient lists. Booking an in-person first visit signals you are looking for a regular doctor.',
+      },
+      {
+        title: 'Prepare your first appointment',
+        description: 'Bring your Carte Vitale (or paper attestation de droits if you are still waiting), a photo ID, your mutuelle card if you have one, and any relevant medical records or prescription history from your home country, ideally translated or summarized in French or English.',
+        tip: 'A consultation with a secteur 1 GP costs around €30 upfront. You are reimbursed about €20 by CPAM and most of the rest by your mutuelle.',
+      },
+      {
+        title: 'Ask the doctor to be your médecin traitant',
+        description: 'At the end of the appointment, ask: "Acceptez-vous d\'être mon médecin traitant ?" Most doctors taking new patients will agree and can submit the declaration electronically using your Carte Vitale on the spot.',
+      },
+      {
+        title: 'Declare them to CPAM via ameli.fr',
+        description: 'If the doctor did not submit the declaration electronically, log in to your ameli.fr account and declare your médecin traitant online, or fill in the paper form (Cerfa 12485) signed by the doctor and mail it to your CPAM.',
+        tip: 'Check your ameli.fr account a few weeks later to confirm the declaration was registered. The higher reimbursement rate applies from the declaration date.',
+      },
+    ]),
+    tips: 'Doctolib is by far the most used medical booking platform in France — nearly every doctor under 60 is on it.\n\nFilter by "secteur 1" for doctors who charge the official tariff (~€30) with no extra fees — important for full reimbursement on a student budget.\n\nYou can filter for English-speaking doctors on Doctolib ("Langues parlées : Anglais"). In Paris and Lyon there are plenty.\n\nExpect a 2–4 week wait for a first appointment with a GP taking new patients in big cities. Book early, and use SOS Médecins or a video consultation if you get sick in the meantime.',
+  }
+  const guideFindDoctor = await prisma.guide.upsert({
+    where: { slug: 'find-doctor' },
+    update: findDoctorData,
+    create: findDoctorData,
+  })
+
+  const registerCpamData = {
+    slug: 'register-cpam',
+    checklistCategory: 'health',
+    title: 'Register with CPAM (French health insurance)',
+    summary: 'Everyone living in France for 3+ months is entitled to French public health insurance (Assurance Maladie). Registration is free, covers ~70% of most healthcare costs, and ends with your own Carte Vitale.',
+    officialLinks: JSON.stringify([
+      { label: 'Ameli — Assurance Maladie portal', url: 'https://www.ameli.fr' },
+      { label: 'Foreign student registration portal', url: 'https://etudiant-etranger.ameli.fr' },
+      { label: 'Service-Public — health insurance for foreigners', url: 'https://www.service-public.fr/particuliers/vosdroits/F34009' },
+    ]),
+    steps: JSON.stringify([
+      {
+        title: 'Check that you need to register',
+        description: 'All residents staying in France for more than 3 months should register. Non-EU students register on etudiant-etranger.ameli.fr as soon as they arrive. EU students can initially use their EHIC card, but registering with CPAM is still recommended for stays over a year.',
+        tip: 'Registration is free. The "Contribution Vie Étudiante et de Campus" (CVEC) you paid at university enrollment is separate from health insurance.',
+      },
+      {
+        title: 'Gather your documents',
+        description: 'You will need: passport, visa or titre de séjour, RIB (French bank details), proof of address (justificatif de domicile), proof of enrollment (certificat de scolarité), and a birth certificate — ideally a certified translation into French (extrait plurilingue if your country issues them).',
+        tip: 'The translated birth certificate is the document that delays most applications. Order a certified translation early — sworn translators (traducteurs assermentés) charge €30–60 per document.',
+      },
+      {
+        title: 'Submit your application',
+        description: 'Non-EU students: create an account on etudiant-etranger.ameli.fr and upload everything online. Others: send the Cerfa 736 form ("Demande d\'ouverture des droits à l\'assurance maladie") with copies of your documents to the CPAM office of your département, or apply via ameli.fr.',
+      },
+      {
+        title: 'Receive your numéro de sécurité sociale',
+        description: 'You first receive a provisional number, then a permanent 13-digit numéro de sécurité sociale by mail. This number is your key to the entire French health system — and is also requested by employers and many administrations.',
+        tip: 'As soon as you have your permanent number, create your personal account on ameli.fr. All reimbursements, attestations, and the médecin traitant declaration happen there.',
+      },
+      {
+        title: 'Wait for your Carte Vitale',
+        description: 'Once your file is validated, order your Carte Vitale from your ameli account (you will need a digital photo and ID scan). Expect 2–3 months between registration and receiving the physical card. Meanwhile, download your attestation de droits and bring it to appointments.',
+        tip: 'Without the physical card you pay upfront and send the feuille de soins for reimbursement — slower, but you lose nothing.',
+      },
+    ]),
+    tips: 'Non-EU students: register on etudiant-etranger.ameli.fr immediately after arriving — processing takes months, and your numéro de sécurité sociale unlocks everything else (mutuelle, médecin traitant, jobs).\n\nEU students can use their EHIC (European Health Insurance Card) at first, but register with CPAM if staying more than a year.\n\nKeep the paper attestation de droits in your bag while waiting for the Carte Vitale — doctors and pharmacies accept it.\n\nSet up your ameli.fr account as soon as you have your number: reimbursements arrive directly on your French bank account within a week.',
+  }
+  const guideRegisterCpam = await prisma.guide.upsert({
+    where: { slug: 'register-cpam' },
+    update: registerCpamData,
+    create: registerCpamData,
+  })
+
+  const mutuelleData = {
+    slug: 'mutuelle-health-insurance',
+    checklistCategory: 'health',
+    title: 'Get a complementary health insurance (mutuelle)',
+    summary: 'CPAM reimburses about 70% of most healthcare costs — a mutuelle covers most of the rest. Student mutuelles start around €10/month and matter most for dental, glasses, and hospital stays.',
+    officialLinks: JSON.stringify([
+      { label: 'L\'Assurance Radicale — mutuelle comparator', url: 'https://www.lassuranceradicale.com' },
+      { label: 'LeLynx — compare mutuelles', url: 'https://www.lelynx.fr/mutuelle-sante' },
+      { label: 'Heyme — student health insurance', url: 'https://www.heyme.care' },
+      { label: 'SMERRA — student mutuelle', url: 'https://www.smerra.fr' },
+    ]),
+    steps: JSON.stringify([
+      {
+        title: 'Understand what a mutuelle covers',
+        description: 'The public Assurance Maladie reimburses ~70% of doctor visits and a variable share of medication, dental, and optical costs. A mutuelle (complementary insurance) covers some or all of the remaining "ticket modérateur". Without one, a hospital stay or new glasses can cost hundreds of euros out of pocket.',
+        tip: 'A mutuelle is not legally required for students, but going without one is a gamble — one emergency room visit can cost more than a year of premiums.',
+      },
+      {
+        title: 'Compare offers based on your needs',
+        description: 'Use a comparator (LeLynx) or look directly at student offers (Heyme, SMERRA, LMDE). Compare reimbursement levels for what you actually use: dental care, glasses or lenses, hospitalization, and consultations with specialists charging above the official tariff (dépassements d\'honoraires).',
+        tip: 'Ignore marketing tiers like "Confort+" — read the reimbursement table. "100%" means 100% of the official tariff, not 100% of what you paid.',
+      },
+      {
+        title: 'Subscribe online',
+        description: 'Subscription takes about 15 minutes online with your numéro de sécurité sociale, RIB, and ID. Coverage usually starts the 1st of the following month. You receive a carte de tiers payant (mutuelle card) by email or post.',
+      },
+      {
+        title: 'Present your attestation to doctors and pharmacies',
+        description: 'Show your mutuelle card together with your Carte Vitale at every appointment and pharmacy visit. With "tiers payant", you often pay nothing upfront at the pharmacy — CPAM and the mutuelle are billed directly.',
+        tip: 'Link your mutuelle to your ameli.fr account (télétransmission) so the complementary reimbursement happens automatically, without sending any paperwork.',
+      },
+    ]),
+    tips: 'Student mutuelles like Heyme or LMDE cost roughly €10–25/month depending on coverage level — far cheaper than general-public contracts.\n\nCheck if your school or university has a partnership with a mutuelle: many grandes écoles negotiate discounted group rates.\n\nIf you work part-time, ask your employer: French companies must pay at least 50% of their employees\' mutuelle.\n\nFor students, dental and optical coverage matter most — that\'s where out-of-pocket costs explode. Prioritize those two lines in any comparison.',
+  }
+  const guideMutuelle = await prisma.guide.upsert({
+    where: { slug: 'mutuelle-health-insurance' },
+    update: mutuelleData,
+    create: mutuelleData,
+  })
+
+  const pharmacyData = {
+    slug: 'pharmacy-prescriptions',
+    checklistCategory: 'health',
+    title: 'Pharmacies and prescriptions in France',
+    summary: 'French pharmacies (the green cross) are everywhere and pharmacists are trained to give basic medical advice. Knowing how prescriptions, reimbursements, and night pharmacies work saves you money and stress.',
+    officialLinks: JSON.stringify([
+      { label: 'Ameli — medication reimbursement rules', url: 'https://www.ameli.fr/assure/remboursements/rembourse/medicaments-vaccins-dispositifs-medicaux' },
+      { label: 'Find the pharmacy on duty (pharmacie de garde)', url: 'https://monpharmacien.sante.gouv.fr' },
+    ]),
+    steps: JSON.stringify([
+      {
+        title: 'Understand how prescriptions work',
+        description: 'After a consultation, the doctor gives you an ordonnance (prescription), on paper or electronically via your Carte Vitale. Bring it to any pharmacy — prescriptions are valid throughout France, usually for 3 months, and renewable prescriptions state the number of renewals.',
+        tip: 'Keep your ordonnances. You need the original for reimbursement of certain medications, and for renewals of regular treatments.',
+      },
+      {
+        title: 'Find a pharmacie de garde at night or on Sundays',
+        description: 'Outside normal hours, every area has a designated pharmacy on duty. Find it on monpharmacien.sante.gouv.fr, by calling 3237, or on the sign posted on any closed pharmacy\'s door. In Paris, some pharmacies (like the one on Champs-Élysées) are open 24/7.',
+      },
+      {
+        title: 'Know what is reimbursed',
+        description: 'Prescribed medication is reimbursed by CPAM at 15%, 30%, 65%, or 100% depending on the medication\'s medical value, with the mutuelle usually covering the rest. Over-the-counter purchases without a prescription are not reimbursed.',
+        tip: 'With Carte Vitale + mutuelle card, most pharmacies apply tiers payant: you walk out without paying anything for prescribed medication.',
+      },
+      {
+        title: 'Accept generics (génériques)',
+        description: 'Pharmacists substitute generic versions of brand-name drugs by default — same molecule, lower price. If you refuse the generic without medical justification, you pay upfront and are reimbursed less.',
+        tip: 'Doliprane (paracetamol) and Advil (ibuprofen) are the household names — ask for them by brand and the pharmacist will know exactly what you need.',
+      },
+    ]),
+    tips: 'The green cross sign = pharmacy. If it\'s lit and blinking, it\'s open.\n\nAlways bring your Carte Vitale AND your mutuelle card — together they usually mean you pay €0 for prescribed medication.\n\nUnlike many countries, OTC medication like ibuprofen or paracetamol is behind the counter — just ask the pharmacist for "Advil" or "Doliprane".\n\nFrench pharmacists can give basic medical advice without an appointment — for minor issues (colds, blisters, insect bites), ask them before booking a doctor.',
+  }
+  const guidePharmacy = await prisma.guide.upsert({
+    where: { slug: 'pharmacy-prescriptions' },
+    update: pharmacyData,
+    create: pharmacyData,
+  })
+
+  const mentalHealthData = {
+    slug: 'mental-health-support',
+    checklistCategory: 'health',
+    title: 'Mental health support and resources',
+    summary: 'Moving abroad is hard, and France has real, mostly free support for students: 12 psychologist sessions per year, free university services, and anonymous peer listening in English. Knowing they exist is half the battle.',
+    officialLinks: JSON.stringify([
+      { label: 'Santé Psy Étudiant — free sessions for students', url: 'https://santepsy.etudiant.gouv.fr' },
+      { label: 'Psycom — mental health information', url: 'https://www.psycom.org' },
+      { label: '3114 — national suicide prevention line', url: 'https://3114.fr' },
+      { label: 'Nightline — peer student listening', url: 'https://www.nightline.fr' },
+    ]),
+    steps: JSON.stringify([
+      {
+        title: 'Use the "Mon soutien psy" program',
+        description: 'Anyone insured in France can get up to 12 sessions per year with a partner psychologist, covered by Assurance Maladie. Since 2024 you can book directly with a participating psychologist — search the directory on santepsy.etudiant.gouv.fr or ask your médecin traitant for a referral.',
+        tip: 'Sessions are covered at 100% for students under the dispositif — no upfront payment with Carte Vitale and mutuelle.',
+      },
+      {
+        title: 'Find an English-speaking therapist',
+        description: 'On Doctolib, search "psychologue" and filter by language ("Anglais"). Many therapists in Paris and Lyon work with international patients, in person or by video. Private sessions outside the program cost €50–80 and may be partly covered by some mutuelles.',
+      },
+      {
+        title: 'Access free university services',
+        description: 'Every university has a SUMPPS/SSE (student health service) offering free, confidential consultations with doctors, nurses, and psychologists. BAPU (Bureaux d\'Aide Psychologique Universitaires) provide free psychoanalytic therapy for students under 27 — sessions are fully covered.',
+        tip: 'You do not need to be in crisis to use SUMPPS. Homesickness, sleep issues, and stress are exactly what they are there for.',
+      },
+      {
+        title: 'Know the urgent numbers',
+        description: 'If you or someone you know is in crisis: call 3114 (national suicide prevention line, 24/7, free). Nightline offers anonymous evening peer listening by and for students, including in English. For medical emergencies, call 15 (SAMU) or 112.',
+      },
+    ]),
+    tips: 'Students get 12 free psychologist sessions per year through Mon Soutien Psy — use them, they renew every year.\n\nUniversity health services (SUMPPS) are free, confidential, and used by thousands of students — there is zero stigma.\n\nNightline offers anonymous peer listening in English several evenings a week — sometimes you just need another student who gets it.\n\nCulture shock and homesickness are normal, documented, and treatable. The dip around month 3–6 is so common it has a name. Talking about it early makes it shorter.',
+  }
+  const guideMentalHealth = await prisma.guide.upsert({
+    where: { slug: 'mental-health-support' },
+    update: mentalHealthData,
+    create: mentalHealthData,
+  })
+
+  console.log('✓ Created 5 health guides')
+
   // ── Guide comments ───────────────────────────────────────
   const pastDate = (daysAgo: number) => {
     const d = new Date()
@@ -351,17 +560,98 @@ async function main() {
     ],
   })
 
+  // Health guide comments
+  await prisma.guideComment.createMany({
+    data: [
+      // Find a doctor
+      {
+        guideId: guideFindDoctor.id,
+        authorId: ambassador.id,
+        content: "The secteur 1 filter on Doctolib is the tip I give every newcomer. My first doctor was secteur 2 and charged €55 per visit — I only got €20 back. Switched to a secteur 1 GP near Bastille and now a visit effectively costs me nothing with my mutuelle.",
+        helpful: 17,
+        createdAt: pastDate(50),
+      },
+      {
+        guideId: guideFindDoctor.id,
+        authorId: newcomer.id,
+        content: "Found an English-speaking doctor on Doctolib using the language filter — huge relief for my first appointment. She agreed to be my médecin traitant and did the declaration electronically with my attestation, even though my Carte Vitale hadn't arrived yet.",
+        helpful: 9,
+        createdAt: pastDate(14),
+      },
+      // CPAM registration
+      {
+        guideId: guideRegisterCpam.id,
+        authorId: ambassador.id,
+        content: "The translated birth certificate is THE bottleneck. I waited 5 weeks because my Brazilian certificate needed a sworn translation. Order it before you even arrive in France if you can. Everything after that was surprisingly smooth on the student portal.",
+        helpful: 23,
+        createdAt: pastDate(80),
+      },
+      {
+        guideId: guideRegisterCpam.id,
+        authorId: newcomer.id,
+        content: "Registered on etudiant-etranger.ameli.fr my second week here. Got the provisional number after about 6 weeks. The paper attestation worked fine at the pharmacy and the doctor while waiting. Still waiting for the physical Carte Vitale but reimbursements already arrive on my account.",
+        helpful: 12,
+        createdAt: pastDate(18),
+      },
+      // Mutuelle
+      {
+        guideId: guideMutuelle.id,
+        authorId: ambassador.id,
+        content: "When I started my part-time job I discovered my employer had to pay half of my mutuelle — I cancelled my student contract and saved €15/month. If you work, even part-time, ask HR before subscribing to anything.",
+        helpful: 14,
+        createdAt: pastDate(65),
+      },
+      {
+        guideId: guideMutuelle.id,
+        authorId: newcomer.id,
+        content: "Took Heyme's basic plan at €9.90/month after comparing on LeLynx. The télétransmission with ameli took one click and now reimbursements just appear on my account without doing anything. Wish I'd known glasses coverage varies so much though — read that line carefully.",
+        helpful: 8,
+        createdAt: pastDate(11),
+      },
+      // Pharmacy
+      {
+        guideId: guidePharmacy.id,
+        authorId: ambassador.id,
+        content: "The pharmacist is your first doctor in France. Mine has diagnosed and solved more small problems (allergies, a infected cut, sleep advice) than I can count, for free, without appointment. Find a good neighborhood pharmacy and stay loyal to it.",
+        helpful: 19,
+        createdAt: pastDate(40),
+      },
+      {
+        guideId: guidePharmacy.id,
+        authorId: newcomer.id,
+        content: "Was so confused the first time I asked for ibuprofen and couldn't find it on the shelves — it's behind the counter, you just ask. With Carte Vitale + mutuelle card I paid literally €0 for my prescription last week. The 3237 number for night pharmacies also works great.",
+        helpful: 10,
+        createdAt: pastDate(9),
+      },
+      // Mental health
+      {
+        guideId: guideMentalHealth.id,
+        authorId: ambassador.id,
+        content: "I used the 12 free sessions during my second year when the novelty had worn off and homesickness hit hard. My psychologist spoke Portuguese, which mattered more than I expected. Don't wait until you're in crisis — book when you first notice you're not okay.",
+        helpful: 26,
+        createdAt: pastDate(75),
+      },
+      {
+        guideId: guideMentalHealth.id,
+        authorId: newcomer.id,
+        content: "Called Nightline on a rough evening in my first month — anonymous, in English, just another student listening. Also confirmed the SUMPPS at my university takes appointments within a week and it's completely free. This guide should be required reading.",
+        helpful: 15,
+        createdAt: pastDate(6),
+      },
+    ],
+  })
+
   console.log('✓ Created guide comments')
 
   // ── Checklist for demo users ─────────────────────────────
   const GENERIC_ITEMS = [
     { category: 'admin', title: 'Register at your local Mairie', description: 'Register your address at the town hall (declaration de domicile)', order: 1, guideSlug: null },
     { category: 'admin', title: 'Open a French bank account', description: 'Required for most services. Try La Banque Postale or a neobank like Wise.', order: 2, guideSlug: 'open-bank-account' },
-    { category: 'health', title: 'Register with CPAM (Assurance Maladie)', description: 'Apply for French health insurance at ameli.fr', order: 3, guideSlug: null },
+    { category: 'health', title: 'Register with CPAM (Assurance Maladie)', description: 'Apply for French health insurance at ameli.fr', order: 3, guideSlug: 'register-cpam' },
     { category: 'admin', title: 'Apply for CAF housing aid', description: 'Housing assistance (APL) from the French state at caf.fr', order: 4, guideSlug: 'caf-housing-aid' },
     { category: 'admin', title: 'Get a French SIM card', description: 'A local number is needed for most registrations and verifications', order: 5, guideSlug: 'french-sim-card' },
-    { category: 'health', title: 'Obtain your Carte Vitale', description: 'Your health insurance card — apply once CPAM registration is confirmed', order: 6, guideSlug: null },
-    { category: 'health', title: 'Register with a médecin traitant', description: 'Choose a primary care physician (required for full reimbursement)', order: 7, guideSlug: null },
+    { category: 'health', title: 'Obtain your Carte Vitale', description: 'Your health insurance card — apply once CPAM registration is confirmed', order: 6, guideSlug: 'register-cpam' },
+    { category: 'health', title: 'Register with a médecin traitant', description: 'Choose a primary care physician (required for full reimbursement)', order: 7, guideSlug: 'find-doctor' },
     { category: 'admin', title: 'Set up a Navigo transport card', description: 'Monthly metro/bus pass for Île-de-France. Available at any station.', order: 8, guideSlug: 'navigo-card' },
     { category: 'admin', title: 'Apply for titre de séjour (non-EU)', description: 'Submit residence permit application online', order: 9, guideSlug: 'titre-de-sejour-student' },
     { category: 'admin', title: 'Set up EDF or Engie (utilities)', description: 'Register electricity and gas in your name if renting', order: 10, guideSlug: null },
@@ -370,6 +660,9 @@ async function main() {
     { category: 'community', title: 'Join a local international group', description: 'Meetup.com or Facebook groups for expats in your city', order: 13, guideSlug: null },
     { category: 'culture', title: 'Get a library card (médiathèque)', description: 'Free access to books, films, and often free events', order: 14, guideSlug: null },
     { category: 'community', title: 'Attend a Tsunagari welcome event', description: 'Meet fellow newcomers and local ambassadors', order: 15, guideSlug: null },
+    { category: 'health', title: 'Get a complementary health insurance (mutuelle)', description: 'CPAM covers ~70% — a mutuelle covers the rest. Student plans from €10/month.', order: 21, guideSlug: 'mutuelle-health-insurance' },
+    { category: 'health', title: 'Learn how pharmacies and prescriptions work', description: 'Find your neighborhood pharmacy and the pharmacie de garde for nights and Sundays', order: 22, guideSlug: 'pharmacy-prescriptions' },
+    { category: 'health', title: 'Know your mental health resources', description: '12 free psychologist sessions per year, free university services, and peer listening', order: 23, guideSlug: 'mental-health-support' },
   ]
 
   const JAPANESE_ITEMS = [

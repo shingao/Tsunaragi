@@ -52,7 +52,7 @@ export function GuidesSearch({ guides }: { guides: Guide[] }) {
       </div>
 
       {Object.keys(grouped).length === 0 ? (
-        <p className="text-sm" style={{ color: 'var(--muted)' }}>No guides match your search.</p>
+        <p className="text-base" style={{ color: 'var(--muted)' }}>No guides match your search.</p>
       ) : (
         <div className="space-y-10">
           {Object.entries(grouped).map(([cat, catGuides]) => (
@@ -72,12 +72,12 @@ export function GuidesSearch({ guides }: { guides: Guide[] }) {
                       onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = 'var(--line)')}
                     >
                       <div
-                        className="text-sm font-medium mb-2 transition-colors group-hover:text-accent"
+                        className="text-base font-medium mb-2 transition-colors group-hover:text-accent"
                         style={{ color: 'var(--text)' }}
                       >
                         {guide.title}
                       </div>
-                      <p className="text-[11px] leading-relaxed line-clamp-2 mb-3" style={{ color: 'var(--muted)' }}>
+                      <p className="text-sm leading-relaxed line-clamp-2 mb-3" style={{ color: 'var(--muted)' }}>
                         {guide.summary}
                       </p>
                       <div

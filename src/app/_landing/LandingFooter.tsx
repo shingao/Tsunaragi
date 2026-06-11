@@ -10,7 +10,7 @@ const LINKS = [
   { label: 'Map', href: '/map' },
   { label: 'Stories', href: '/stories' },
   { label: 'Experiences', href: '/experiences' },
-  { label: 'Sign in', href: '/auth/signin' },
+  { label: 'Log in', href: '/auth/login' },
 ]
 
 export function LandingFooter() {

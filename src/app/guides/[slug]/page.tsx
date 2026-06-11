@@ -8,6 +8,8 @@ import { Divider } from '@/components/Divider'
 import { StatusBadge } from '@/components/StatusBadge'
 import { CommentForm } from './CommentForm'
 import { HelpfulButton } from './HelpfulButton'
+import { RelatedGuideLink } from './RelatedGuideLink'
+import { OfficialLinkCard } from '@/components/OfficialLinkCard'
 
 export const dynamic = 'force-dynamic'
 
@@ -98,10 +100,10 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                 </span>
               )}
             </div>
-            <h1 className="text-xl font-serif mb-3" style={{ color: 'var(--text)', fontWeight: 500 }}>
+            <h1 className="text-3xl font-serif mb-3" style={{ color: 'var(--text)', fontWeight: 500 }}>
               {guide.title}
             </h1>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{guide.summary}</p>
+            <p className="text-lg leading-relaxed" style={{ color: 'var(--muted)' }}>{guide.summary}</p>
             <div
               className="text-[10px] mt-4"
               style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}
@@ -116,31 +118,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               <div className="section-label mb-4">Official resources</div>
               <div className="flex flex-col gap-2">
                 {officialLinks.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 text-sm transition-colors duration-150"
-                    style={{
-                      border: '1px solid var(--line)',
-                      color: 'var(--text)',
-                      backgroundColor: 'var(--surface)',
-                      borderRadius: '4px',
-                      fontFamily: 'var(--font-inter), sans-serif',
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'
-                      ;(e.currentTarget as HTMLElement).style.color = 'var(--accent)'
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.borderColor = 'var(--line)'
-                      ;(e.currentTarget as HTMLElement).style.color = 'var(--text)'
-                    }}
-                  >
-                    <span style={{ color: 'var(--muted)' }}>↗</span>
-                    {link.label}
-                  </a>
+                  <OfficialLinkCard key={link.url} label={link.label} url={link.url} />
                 ))}
               </div>
             </div>
@@ -166,10 +144,10 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                       {String(i + 1).padStart(2, '0')}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium mb-1" style={{ color: 'var(--text)' }}>
+                      <div className="text-lg font-medium mb-1" style={{ color: 'var(--text)' }}>
                         {step.title}
                       </div>
-                      <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
+                      <p className="text-base leading-relaxed" style={{ color: 'var(--muted)' }}>
                         {step.description}
                       </p>
                       {step.tip && (
@@ -177,7 +155,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                           className="mt-3 pl-3"
                           style={{ borderLeft: '2px solid var(--accent)' }}
                         >
-                          <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+                          <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                             <span
                               className="font-medium"
                               style={{
@@ -213,7 +191,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                   borderRadius: '4px',
                 }}
               >
-                <div className="text-sm leading-[1.8] whitespace-pre-wrap" style={{ color: 'var(--muted)' }}>
+                <div className="text-base leading-[1.8] whitespace-pre-wrap" style={{ color: 'var(--muted)' }}>
                   {guide.tips}
                 </div>
               </div>
@@ -238,7 +216,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                   >
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-medium" style={{ color: 'var(--text)' }}>
+                        <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
                           {comment.author.name ?? 'Community member'}
                         </span>
                         <StatusBadge status={comment.author.status} />
@@ -255,7 +233,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                         initialCount={comment.helpful}
                       />
                     </div>
-                    <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
+                    <p className="text-base leading-relaxed" style={{ color: 'var(--muted)' }}>
                       {comment.content}
                     </p>
                   </div>
@@ -264,7 +242,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
             )}
 
             {guide.comments.length === 0 && (
-              <p className="text-sm mb-6" style={{ color: 'var(--muted)' }}>
+              <p className="text-base mb-6" style={{ color: 'var(--muted)' }}>
                 No comments yet. Be the first to share your experience.
               </p>
             )}
@@ -279,11 +257,11 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
                 className="p-4"
                 style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
               >
-                <p className="text-xs mb-3" style={{ color: 'var(--muted)' }}>
-                  Sign in to share your experience and help others.
+                <p className="text-sm mb-3" style={{ color: 'var(--muted)' }}>
+                  Log in to share your experience and help others.
                 </p>
-                <Link href="/auth/signin" className="btn-secondary text-sm">
-                  Sign in
+                <Link href="/auth/login" className="btn-secondary text-sm">
+                  Log in
                 </Link>
               </div>
             )}
@@ -302,7 +280,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               <>
                 {checklistStatus !== null && (
                   <div
-                    className="text-xs mb-3"
+                    className="text-sm mb-3"
                     style={{ color: checklistStatus?.completed ? 'var(--success)' : 'var(--muted)' }}
                   >
                     {checklistStatus?.completed
@@ -316,11 +294,11 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               </>
             ) : (
               <>
-                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
-                  Sign in to track your progress and mark this step done.
+                <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                  Log in to track your progress and mark this step done.
                 </p>
-                <Link href="/auth/signin" className="btn-ghost text-sm w-full justify-center">
-                  Sign in
+                <Link href="/auth/login" className="btn-ghost text-sm w-full justify-center">
+                  Log in
                 </Link>
               </>
             )}
@@ -335,16 +313,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
               <div className="section-label mb-3">Related guides</div>
               <div className="space-y-2">
                 {relatedGuides.map((g) => (
-                  <Link
-                    key={g.slug}
-                    href={`/guides/${g.slug}`}
-                    className="block text-xs py-1 transition-colors"
-                    style={{ color: 'var(--muted)', borderBottom: '1px solid var(--line)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--muted)')}
-                  >
-                    {g.title}
-                  </Link>
+                  <RelatedGuideLink key={g.slug} slug={g.slug} title={g.title} />
                 ))}
               </div>
               <Link
@@ -372,7 +341,7 @@ export default async function GuideDetailPage({ params }: { params: { slug: stri
             >
               Contribute
             </div>
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
               Leaving a helpful comment counts toward your Ambassador status.
             </p>
           </div>

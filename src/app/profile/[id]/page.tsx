@@ -54,7 +54,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
               <MyceliaLogo size={24} color="var(--accent)" />
             </div>
             <div>
-              <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              <h1 className="text-3xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
                 {user.name ?? 'Community Member'}
               </h1>
               <StatusBadge status={user.status} className="mt-1.5" showTooltip />
@@ -101,7 +101,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
           </div>
 
           {user.bio && (
-            <p className="text-sm leading-relaxed mt-6 max-w-lg" style={{ color: 'var(--muted)' }}>
+            <p className="text-base leading-relaxed mt-6 max-w-lg" style={{ color: 'var(--muted)' }}>
               {user.bio}
             </p>
           )}
@@ -144,12 +144,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             <div className="space-y-3">
               {user.storiesWritten.map((story) => (
                 <Link key={story.id} href={`/stories/${story.id}`} className="block group">
-                  <div
-                    className="text-sm font-medium transition-colors"
-                    style={{ color: 'var(--text)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
-                  >
+                  <div className="text-base font-medium transition-colors text-text group-hover:text-accent">
                     {story.title}
                   </div>
                   <div className="flex items-center gap-2 mt-0.5">
@@ -188,7 +183,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                   >
                     {place.category.toLowerCase()}
                   </span>
-                  <span className="text-xs" style={{ color: 'var(--text)' }}>{place.name}</span>
+                  <span className="text-sm" style={{ color: 'var(--text)' }}>{place.name}</span>
                   <span className="text-[10px] ml-auto" style={{ color: 'var(--muted)' }}>{place.city}</span>
                 </div>
               ))}
@@ -203,12 +198,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             <div className="space-y-3">
               {user.hostedExperiences.map((exp) => (
                 <Link key={exp.id} href={`/experiences/${exp.id}`} className="block group">
-                  <div
-                    className="text-sm font-medium transition-colors"
-                    style={{ color: 'var(--text)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
-                  >
+                  <div className="text-base font-medium transition-colors text-text group-hover:text-accent">
                     {exp.title}
                   </div>
                   <div

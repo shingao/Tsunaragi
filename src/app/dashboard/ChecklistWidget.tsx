@@ -128,7 +128,7 @@ export function ChecklistWidget({ items: initialItems }: ChecklistWidgetProps) {
 
                     <div className="flex-1 min-w-0">
                       <div
-                        className="text-xs font-medium transition-colors"
+                        className="text-base font-medium transition-colors"
                         style={{
                           color: item.completed ? 'var(--muted)' : 'var(--text)',
                           textDecoration: item.completed ? 'line-through' : 'none',
@@ -137,7 +137,7 @@ export function ChecklistWidget({ items: initialItems }: ChecklistWidgetProps) {
                         {item.title}
                       </div>
                       {item.description && (
-                        <div className="text-[11px] mt-0.5 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                        <div className="text-sm mt-0.5 leading-relaxed" style={{ color: 'var(--muted)' }}>
                           {item.description}
                         </div>
                       )}

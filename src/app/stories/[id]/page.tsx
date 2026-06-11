@@ -52,7 +52,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
               {formatDate(story.createdAt)}
             </span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-serif leading-tight mb-4" style={{ color: 'var(--text)', fontWeight: 400 }}>
+          <h1 className="text-3xl md:text-4xl font-serif leading-tight mb-4" style={{ color: 'var(--text)', fontWeight: 400 }}>
             {story.title}
           </h1>
           {tags.length > 0 && (
@@ -74,7 +74,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
 
         {/* Content */}
         <div
-          className="text-base leading-[1.9] whitespace-pre-wrap mb-10"
+          className="text-lg leading-[1.9] whitespace-pre-wrap mb-10"
           style={{ color: 'var(--text)', fontFamily: 'var(--font-inter), sans-serif' }}
         >
           {story.content}
@@ -98,7 +98,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
             <MyceliaLogo size={18} color="var(--accent)" />
           </div>
           <div>
-            <div className="font-medium text-sm mb-0.5" style={{ color: 'var(--text)' }}>
+            <div className="font-medium text-base mb-0.5" style={{ color: 'var(--text)' }}>
               <Link
                 href={`/profile/${story.author.id}`}
                 className="transition-colors hover:underline"
@@ -114,7 +114,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
               </div>
             )}
             {story.author.bio && (
-              <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
+              <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
                 {story.author.bio}
               </p>
             )}
@@ -127,12 +127,7 @@ export default async function StoryDetailPage({ params }: { params: { id: string
             <div className="space-y-3">
               {otherStories.map((s) => (
                 <Link key={s.id} href={`/stories/${s.id}`} className="block group">
-                  <div
-                    className="text-sm font-medium transition-colors"
-                    style={{ color: 'var(--text)' }}
-                    onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--accent)')}
-                    onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = 'var(--text)')}
-                  >
+                  <div className="text-base font-medium transition-colors text-text group-hover:text-accent">
                     {s.title}
                   </div>
                   <div

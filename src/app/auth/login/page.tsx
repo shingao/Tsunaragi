@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Divider } from '@/components/Divider'
 import { MyceliaLogo } from '@/components/MyceliaLogo'
 
-export default function SignInPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -22,7 +22,7 @@ export default function SignInPage() {
     const result = await signIn('email', {
       email: email.trim(),
       redirect: false,
-      callbackUrl: '/onboarding',
+      callbackUrl: '/dashboard',
     })
 
     setLoading(false)
@@ -36,7 +36,10 @@ export default function SignInPage() {
 
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div
+        className="min-h-screen flex items-center justify-center px-4"
+        style={{ backgroundColor: 'var(--success-soft)' }}
+      >
         <div className="max-w-md w-full">
           <div
             className="p-8 md:p-10"
@@ -48,16 +51,16 @@ export default function SignInPage() {
             }}
           >
             <div className="flex items-center gap-2 mb-6">
-              <MyceliaLogo size={20} color="var(--accent)" />
+              <MyceliaLogo size={20} color="var(--success)" />
             </div>
-            <div className="section-label mb-4">Link on its way</div>
+            <div className="section-label mb-4" style={{ color: 'var(--success)' }}>Link on its way</div>
             <h1 className="text-2xl font-serif mb-4" style={{ color: 'var(--text)', fontWeight: 500 }}>
               Check your inbox
             </h1>
             <p className="text-base leading-relaxed mb-6" style={{ color: 'var(--muted)' }}>
-              We&apos;ve sent a magic link to{' '}
+              We&apos;ve sent a login link to{' '}
               <strong style={{ color: 'var(--text)' }}>{email}</strong>.
-              Click the link to create your account and start your journey.
+              Click the link to pick up where you left off.
             </p>
             <Divider rhythm className="mb-6" />
             <p className="text-sm" style={{ color: 'var(--muted)' }}>
@@ -71,7 +74,10 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ backgroundColor: 'var(--success-soft)' }}
+    >
       <div className="max-w-md w-full">
         <div
           className="p-8 md:p-10"
@@ -80,20 +86,20 @@ export default function SignInPage() {
             backgroundColor: 'var(--surface)',
             borderRadius: '4px',
             boxShadow: '0 1px 2px rgba(31,26,21,0.04), 0 4px 12px rgba(31,26,21,0.04)',
-            borderTop: '3px solid var(--accent)',
+            borderTop: '3px solid var(--success)',
           }}
         >
           <div className="flex items-center gap-2 mb-6">
-            <MyceliaLogo size={24} color="var(--accent)" />
+            <MyceliaLogo size={24} color="var(--success)" />
             <span className="font-serif text-base" style={{ color: 'var(--text)', fontWeight: 500 }}>Mycelia</span>
           </div>
 
-          <div className="section-label mb-2" style={{ color: 'var(--accent)' }}>New account</div>
+          <div className="section-label mb-2" style={{ color: 'var(--success)' }}>Existing account</div>
           <h1 className="text-2xl font-serif mb-2" style={{ color: 'var(--text)', fontWeight: 500 }}>
-            Join Mycelia
+            Welcome back
           </h1>
           <p className="text-base mb-8 leading-relaxed" style={{ color: 'var(--muted)' }}>
-            Enter your email to create your account. We&apos;ll send you a magic link — no password needed.
+            Good to see you again. Enter your email and we&apos;ll send you a magic link — no password needed.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -122,16 +128,16 @@ export default function SignInPage() {
               disabled={loading}
               className="btn-primary w-full justify-center disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {loading ? 'Sending...' : 'Create my account'}
+              {loading ? 'Sending...' : 'Send login link'}
             </button>
           </form>
 
           <Divider className="my-6" />
 
           <p className="text-sm" style={{ color: 'var(--muted)' }}>
-            Already have an account?{' '}
-            <Link href="/auth/login" className="underline" style={{ color: 'var(--text)' }}>
-              Log in
+            New here?{' '}
+            <Link href="/auth/signin" className="underline" style={{ color: 'var(--text)' }}>
+              Create an account
             </Link>
           </p>
         </div>

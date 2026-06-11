@@ -22,8 +22,8 @@ export default async function ExperiencesPage() {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="section-label mb-1">Community</div>
-        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>Experiences</h1>
-        <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
+        <h1 className="text-3xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>Experiences</h1>
+        <p className="text-lg mt-2 leading-relaxed" style={{ color: 'var(--muted)' }}>
           Events, workshops, and gatherings hosted by the Mycelia community.
         </p>
       </div>
@@ -33,7 +33,7 @@ export default async function ExperiencesPage() {
       {upcoming.length === 0 && past.length === 0 ? (
         <div className="text-center py-20">
           <div className="text-4xl mb-4 select-none" aria-hidden>🌱</div>
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>No experiences yet. Check back soon.</p>
+          <p className="text-base" style={{ color: 'var(--muted)' }}>No experiences yet. Check back soon.</p>
         </div>
       ) : (
         <div className="space-y-10">
@@ -85,10 +85,7 @@ function ExperienceCard({
 
   return (
     <Link href={`/experiences/${experience.id}`} className="block group">
-      <div className="p-5 h-full flex flex-col transition-colors duration-150" style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
-        onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => (e.currentTarget.style.borderColor = 'var(--accent)')}
-        onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => (e.currentTarget.style.borderColor = 'var(--line)')}
-      >
+      <div className="p-5 h-full flex flex-col transition-colors duration-150 border border-line group-hover:border-accent bg-surface rounded">
         <div className="flex items-start justify-between gap-2 mb-3">
           <span className="text-[10px] uppercase tracking-widest" style={{ color: 'var(--muted)', fontFamily: 'var(--font-jetbrains), monospace' }}>{experience.city}</span>
           {!past && (
@@ -98,11 +95,11 @@ function ExperienceCard({
           )}
         </div>
 
-        <h3 className="text-sm font-medium line-clamp-2 mb-2 flex-1 transition-colors" style={{ color: 'var(--text)' }}>
+        <h3 className="text-base font-medium line-clamp-2 mb-2 flex-1 transition-colors" style={{ color: 'var(--text)' }}>
           {experience.title}
         </h3>
 
-        <p className="text-xs line-clamp-2 mb-4 leading-relaxed" style={{ color: 'var(--muted)' }}>
+        <p className="text-sm line-clamp-2 mb-4 leading-relaxed" style={{ color: 'var(--muted)' }}>
           {experience.description}
         </p>
 

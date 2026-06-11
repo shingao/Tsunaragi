@@ -21,8 +21,8 @@ export default async function GuidesPage() {
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="section-label mb-1">Knowledge base</div>
-        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>Guides</h1>
-        <p className="text-sm mt-2 max-w-xl leading-relaxed" style={{ color: 'var(--muted)' }}>
+        <h1 className="text-3xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>Guides</h1>
+        <p className="text-lg mt-2 max-w-xl leading-relaxed" style={{ color: 'var(--muted)' }}>
           Step-by-step guides for each item on your first-steps checklist. Official links,
           plain-language instructions, and community tips from people who have done it.
         </p>
@@ -33,7 +33,7 @@ export default async function GuidesPage() {
       <GuidesSearch guides={guides} />
 
       <div className="mt-12 pt-8" style={{ borderTop: '1px solid var(--line)' }}>
-        <p className="text-xs" style={{ color: 'var(--muted)' }}>
+        <p className="text-sm" style={{ color: 'var(--muted)' }}>
           Have a tip to share?{' '}
           <Link
             href="/dashboard"

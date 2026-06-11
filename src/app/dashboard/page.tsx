@@ -71,16 +71,16 @@ export default async function DashboardPage() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-10">
         <div>
           <div className="section-label mb-1">Dashboard</div>
-          <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+          <h1 className="text-3xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
             {user.name ?? user.email}
           </h1>
           <div className="flex items-center gap-3 mt-2">
             <StatusBadge status={user.status} showTooltip />
             {user.city && (
-              <span className="text-xs" style={{ color: 'var(--muted)' }}>{user.city}</span>
+              <span className="text-sm" style={{ color: 'var(--muted)' }}>{user.city}</span>
             )}
             {user.arrivalDate && (
-              <span className="text-xs" style={{ color: 'var(--muted)' }}>Arrived {formatDate(user.arrivalDate)}</span>
+              <span className="text-sm" style={{ color: 'var(--muted)' }}>Arrived {formatDate(user.arrivalDate)}</span>
             )}
           </div>
         </div>
@@ -101,7 +101,7 @@ export default async function DashboardPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <div className="section-label">Your first steps</div>
-            <span className="text-xs" style={{ color: 'var(--muted)' }}>{completed}/{total} done</span>
+            <span className="text-sm" style={{ color: 'var(--muted)' }}>{completed}/{total} done</span>
           </div>
 
           {/* Progress bar */}
@@ -132,20 +132,20 @@ export default async function DashboardPage() {
             <div className="section-label mb-3">Your local</div>
             {buddyAsNewcomer ? (
               <div>
-                <div className="text-xs mb-2" style={{ color: 'var(--muted)' }}>
+                <div className="text-sm mb-2" style={{ color: 'var(--muted)' }}>
                   {buddyAsNewcomer.status === 'PENDING' ? 'Request pending' : 'Matched with'}
                 </div>
-                <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+                <div className="font-medium text-base" style={{ color: 'var(--text)' }}>
                   {buddyAsNewcomer.ambassador.name ?? 'Ambassador'}
                 </div>
                 <StatusBadge status={buddyAsNewcomer.ambassador.status} className="mt-1" />
-                <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
                   {buddyAsNewcomer.ambassador.nationality}
                 </div>
               </div>
             ) : (
               <div>
-                <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
+                <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
                   Connect with someone from your background who knows France.
                 </p>
                 <Link href="/buddy" className="btn-secondary text-sm">
@@ -166,7 +166,7 @@ export default async function DashboardPage() {
                 {experiences.map((exp) => (
                   <Link key={exp.id} href={`/experiences/${exp.id}`} className="block group">
                     <div
-                      className="text-xs font-medium group-hover:text-accent line-clamp-1 transition-colors"
+                      className="text-sm font-medium group-hover:text-accent line-clamp-1 transition-colors"
                       style={{ color: 'var(--text)' }}
                     >
                       {exp.title}
@@ -180,12 +180,12 @@ export default async function DashboardPage() {
                     </div>
                   </Link>
                 ))}
-                <Link href="/experiences" className="text-xs transition-colors" style={{ color: 'var(--muted)' }}>
+                <Link href="/experiences" className="text-sm transition-colors" style={{ color: 'var(--muted)' }}>
                   View all →
                 </Link>
               </div>
             ) : (
-              <p className="text-xs" style={{ color: 'var(--muted)' }}>No upcoming events in {user.city}.</p>
+              <p className="text-sm" style={{ color: 'var(--muted)' }}>No upcoming events in {user.city}.</p>
             )}
           </div>
 
@@ -195,7 +195,7 @@ export default async function DashboardPage() {
             style={{ border: '1px solid var(--line)', backgroundColor: 'var(--surface)', borderRadius: '4px' }}
           >
             <div className="section-label mb-3">Profile</div>
-            <div className="space-y-1.5 text-xs" style={{ color: 'var(--muted)' }}>
+            <div className="space-y-1.5 text-sm" style={{ color: 'var(--muted)' }}>
               <div>Nationality: <span style={{ color: 'var(--text)' }}>{user.nationality ?? '—'}</span></div>
               <div>City: <span style={{ color: 'var(--text)' }}>{user.city ?? '—'}</span></div>
               <div>Languages: <span style={{ color: 'var(--text)' }}>{languages.join(', ') || '—'}</span></div>
@@ -224,14 +224,14 @@ export default async function DashboardPage() {
               >
                 Growing your roots
               </div>
-              <p className="text-xs mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
+              <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--muted)' }}>
                 Become an Ambassador by making 3 contributions: share a place,
                 write your story, or welcome someone.
               </p>
               <div className="space-y-1">
-                <Link href="/map" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Share a place</Link>
-                <Link href="/stories/create" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Share your story</Link>
-                <Link href="/buddy" className="block text-xs hover:underline" style={{ color: 'var(--accent)' }}>→ Welcome someone</Link>
+                <Link href="/map" className="block text-sm hover:underline" style={{ color: 'var(--accent)' }}>→ Share a place</Link>
+                <Link href="/stories/create" className="block text-sm hover:underline" style={{ color: 'var(--accent)' }}>→ Share your story</Link>
+                <Link href="/buddy" className="block text-sm hover:underline" style={{ color: 'var(--accent)' }}>→ Welcome someone</Link>
               </div>
             </div>
           )}

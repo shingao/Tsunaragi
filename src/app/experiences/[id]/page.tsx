@@ -45,8 +45,8 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
               {isPast && <span className="text-[10px] text-muted uppercase tracking-widest">Past event</span>}
               {!isPast && isFull && <span className="text-[10px] text-red-500 uppercase tracking-widest font-bold">Full</span>}
             </div>
-            <h1 className="text-2xl font-bold tracking-tight mb-4">{experience.title}</h1>
-            <p className="text-sm text-muted leading-relaxed whitespace-pre-wrap">{experience.description}</p>
+            <h1 className="text-3xl font-bold tracking-tight mb-4">{experience.title}</h1>
+            <p className="text-lg text-muted leading-relaxed whitespace-pre-wrap">{experience.description}</p>
           </div>
 
           <Divider />
@@ -58,12 +58,12 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
             </div>
             <div className="flex flex-wrap gap-2">
               {experience.attendees.map((a) => (
-                <span key={a.userId} className="text-xs border border-border px-2 py-1 text-muted">
+                <span key={a.userId} className="text-sm border border-border px-2 py-1 text-muted">
                   {a.user.name ?? 'Anonymous'}
                 </span>
               ))}
               {experience.attendees.length === 0 && (
-                <span className="text-xs text-muted">No attendees yet — be the first!</span>
+                <span className="text-sm text-muted">No attendees yet — be the first!</span>
               )}
             </div>
           </div>
@@ -73,20 +73,20 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
         <div className="space-y-4">
           <div className="border border-border bg-surface p-5 space-y-3">
             <div className="section-label">When</div>
-            <div className="text-sm font-bold">{formatDate(experience.date)}</div>
-            <div className="text-xs text-muted">
+            <div className="text-base font-bold">{formatDate(experience.date)}</div>
+            <div className="text-sm text-muted">
               {new Date(experience.date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
             </div>
 
             <Divider />
 
             <div className="section-label">Where</div>
-            <div className="text-sm font-bold">{experience.city}</div>
+            <div className="text-base font-bold">{experience.city}</div>
 
             <Divider />
 
             <div className="section-label">Capacity</div>
-            <div className="text-sm">
+            <div className="text-base">
               <span className="font-bold">{experience.attendees.length}</span>
               <span className="text-muted"> / {experience.capacity}</span>
             </div>
@@ -101,8 +101,8 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
                     isFull={isFull && !isAttending}
                   />
                 ) : (
-                  <Link href="/auth/signin" className="btn-secondary w-full justify-center text-xs">
-                    Sign in to RSVP
+                  <Link href="/auth/login" className="btn-secondary w-full justify-center text-sm">
+                    Log in to RSVP
                   </Link>
                 )}
               </>
@@ -113,15 +113,15 @@ export default async function ExperienceDetailPage({ params }: { params: { id: s
           <div className="border border-border bg-surface p-5">
             <div className="section-label mb-3">Host</div>
             <Link href={`/profile/${experience.host.id}`} className="block group">
-              <div className="font-bold text-sm group-hover:text-accent transition-colors">
+              <div className="font-bold text-base group-hover:text-accent transition-colors">
                 {experience.host.name ?? 'Community Member'}
               </div>
               <StatusBadge status={experience.host.status} className="mt-1" />
               {experience.host.nationality && (
-                <div className="text-xs text-muted mt-1">{experience.host.nationality}</div>
+                <div className="text-sm text-muted mt-1">{experience.host.nationality}</div>
               )}
               {experience.host.bio && (
-                <p className="text-xs text-muted mt-2 leading-relaxed line-clamp-3">
+                <p className="text-sm text-muted mt-2 leading-relaxed line-clamp-3">
                   {experience.host.bio}
                 </p>
               )}

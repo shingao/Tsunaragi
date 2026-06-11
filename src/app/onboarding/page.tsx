@@ -157,7 +157,7 @@ export default function OnboardingPage() {
         return (
           <div>
             <label className="section-label block mb-3">Languages you speak</label>
-            <p className="text-xs mb-4" style={{ color: 'var(--muted)' }}>Select all that apply.</p>
+            <p className="text-sm mb-4" style={{ color: 'var(--muted)' }}>Select all that apply.</p>
             <div className="flex flex-wrap gap-2">
               {LANGUAGES.map((lang) => (
                 <button
@@ -184,10 +184,10 @@ export default function OnboardingPage() {
         return (
           <div className="space-y-4">
             <div className="text-3xl mb-2 select-none" style={{ color: 'var(--accent)' }} aria-hidden>🌱</div>
-            <h3 className="text-xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+            <h3 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
               You&apos;re all set
             </h3>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
+            <p className="text-base leading-relaxed" style={{ color: 'var(--muted)' }}>
               Welcome to Mycelia, <strong style={{ color: 'var(--text)' }}>{form.name}</strong>.
               Your first-steps checklist has been generated. Your journey starts now.
             </p>
@@ -201,7 +201,7 @@ export default function OnboardingPage() {
             >
               <div className="section-label">Your profile</div>
               <Divider className="my-2" />
-              <div className="space-y-1 text-xs" style={{ color: 'var(--muted)' }}>
+              <div className="space-y-1 text-sm" style={{ color: 'var(--muted)' }}>
                 <div>City: <span style={{ color: 'var(--text)' }}>{form.city}</span></div>
                 <div>Nationality: <span style={{ color: 'var(--text)' }}>{form.nationality}</span></div>
                 <div>Languages: <span style={{ color: 'var(--text)' }}>{form.languages.join(', ')}</span></div>
@@ -273,7 +273,7 @@ export default function OnboardingPage() {
           {step < STEPS.length - 1 && (
             <div className="mb-6">
               <div className="section-label mb-1">Step {step + 1} of {STEPS.length - 1}</div>
-              <h2 className="text-xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+              <h2 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
                 {STEPS[step]}
               </h2>
             </div>
@@ -282,7 +282,7 @@ export default function OnboardingPage() {
           {stepContent()}
 
           {error && (
-            <p className="text-xs mt-4" style={{ color: '#c0392b' }}>{error}</p>
+            <p className="text-sm mt-4" style={{ color: '#c0392b' }}>{error}</p>
           )}
 
           {step < STEPS.length - 1 && (

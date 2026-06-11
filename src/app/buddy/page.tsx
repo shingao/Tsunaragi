@@ -55,10 +55,10 @@ export default async function BuddyPage() {
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="mb-8">
         <div className="section-label mb-1">Connection</div>
-        <h1 className="text-2xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
+        <h1 className="text-3xl font-serif" style={{ color: 'var(--text)', fontWeight: 500 }}>
           Meet your local
         </h1>
-        <p className="text-sm mt-2 max-w-xl leading-relaxed" style={{ color: 'var(--muted)' }}>
+        <p className="text-lg mt-2 max-w-xl leading-relaxed" style={{ color: 'var(--muted)' }}>
           Get matched with an ambassador who has walked your path, or become one
           and welcome the next person arriving.
         </p>
@@ -88,16 +88,16 @@ export default async function BuddyPage() {
                 {activeRequest.status === 'ACTIVE' ? 'Active match' : 'Request pending'}
               </div>
               <div>
-                <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+                <div className="font-medium text-base" style={{ color: 'var(--text)' }}>
                   {activeRequest.ambassador.name ?? 'Ambassador'}
                 </div>
                 <StatusBadge status={activeRequest.ambassador.status} className="mt-1" />
-                <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
                   {activeRequest.ambassador.nationality} · {activeRequest.ambassador.city}
                 </div>
               </div>
               {activeRequest.ambassador.bio && (
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--muted)' }}>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
                   {activeRequest.ambassador.bio}
                 </p>
               )}
@@ -131,7 +131,7 @@ export default async function BuddyPage() {
                   className="p-6 text-center"
                   style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
                 >
-                  <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                  <p className="text-base" style={{ color: 'var(--muted)' }}>
                     No locals available right now. Check back soon.
                   </p>
                 </div>
@@ -153,10 +153,10 @@ export default async function BuddyPage() {
               className="p-6"
               style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
             >
-              <div className="text-sm font-medium mb-3" style={{ color: 'var(--accent)' }}>
+              <div className="text-base font-medium mb-3" style={{ color: 'var(--accent)' }}>
                 Ambassador status required
               </div>
-              <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--muted)' }}>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--muted)' }}>
                 Ambassadors are settled members who have made 3 contributions:
                 sharing a place, writing a story, or welcoming a newcomer.
                 Your status updates automatically as you contribute.
@@ -172,8 +172,8 @@ export default async function BuddyPage() {
                   className="p-5 text-center"
                   style={{ border: '1px solid var(--line)', borderRadius: '4px', backgroundColor: 'var(--surface)' }}
                 >
-                  <p className="text-sm" style={{ color: 'var(--muted)' }}>No requests yet.</p>
-                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                  <p className="text-base" style={{ color: 'var(--muted)' }}>No requests yet.</p>
+                  <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
                     You will be notified when newcomers reach out.
                   </p>
                 </div>
@@ -186,11 +186,11 @@ export default async function BuddyPage() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+                        <div className="font-medium text-base" style={{ color: 'var(--text)' }}>
                           {match.newcomer.name ?? 'Newcomer'}
                         </div>
                         <StatusBadge status={match.newcomer.status} className="mt-1" />
-                        <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                        <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
                           {match.newcomer.nationality} · {match.newcomer.city}
                         </div>
                       </div>
@@ -235,15 +235,15 @@ function AmbassadorCard({
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-medium text-sm" style={{ color: 'var(--text)' }}>
+          <div className="font-medium text-base" style={{ color: 'var(--text)' }}>
             {ambassador.name ?? 'Ambassador'}
           </div>
           <StatusBadge status={ambassador.status} className="mt-1" />
-          <div className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+          <div className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
             {ambassador.nationality} · {ambassador.city}
           </div>
           {ambassador.bio && (
-            <p className="text-xs mt-2 leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
+            <p className="text-sm mt-2 leading-relaxed line-clamp-2" style={{ color: 'var(--muted)' }}>
               {ambassador.bio}
             </p>
           )}

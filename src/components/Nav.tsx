@@ -79,9 +79,20 @@ export function Nav() {
               </button>
             </>
           ) : (
-            <Link href="/auth/signin" className="btn-primary text-sm">
-              Sign in
-            </Link>
+            <>
+              <Link
+                href="/auth/login"
+                className="text-sm transition-colors"
+                style={{ color: 'var(--muted)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--muted)')}
+              >
+                Log in
+              </Link>
+              <Link href="/auth/signin" className="btn-primary text-sm">
+                Sign up
+              </Link>
+            </>
           )}
         </div>
 
@@ -138,9 +149,19 @@ export function Nav() {
                 </button>
               </>
             ) : (
-              <Link href="/auth/signin" className="btn-primary text-sm w-fit" onClick={() => setMenuOpen(false)}>
-                Sign in
-              </Link>
+              <>
+                <Link
+                  href="/auth/login"
+                  className="text-sm py-1 transition-colors"
+                  style={{ color: 'var(--muted)' }}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Log in
+                </Link>
+                <Link href="/auth/signin" className="btn-primary text-sm w-fit" onClick={() => setMenuOpen(false)}>
+                  Sign up
+                </Link>
+              </>
             )}
           </nav>
         </div>
